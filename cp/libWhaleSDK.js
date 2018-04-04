@@ -11,8 +11,7 @@ function hex_hmac_md5(key, data) { return binl2hex(core_hmac_md5(key, data)); }
 function b64_hmac_md5(key, data) { return binl2b64(core_hmac_md5(key, data)); }
 function str_hmac_md5(key, data) { return binl2str(core_hmac_md5(key, data)); }
 
-function core_md5(x, len)
-{
+function core_md5(x, len){
   /* append padding */
   x[len >> 5] |= 0x80 << ((len) % 32);
   x[(((len + 64) >>> 9) << 4) + 14] = len;
@@ -103,38 +102,21 @@ function core_md5(x, len)
     d = safe_add(d, oldd);
   }
   return Array(a, b, c, d);
-
 }
 
 /*
  * These functions implement the four basic operations the algorithm uses.
  */
-function md5_cmn(q, a, b, x, s, t)
-{
-  return safe_add(bit_rol(safe_add(safe_add(a, q), safe_add(x, t)), s),b);
-}
-function md5_ff(a, b, c, d, x, s, t)
-{
-  return md5_cmn((b & c) | ((~b) & d), a, b, x, s, t);
-}
-function md5_gg(a, b, c, d, x, s, t)
-{
-  return md5_cmn((b & d) | (c & (~d)), a, b, x, s, t);
-}
-function md5_hh(a, b, c, d, x, s, t)
-{
-  return md5_cmn(b ^ c ^ d, a, b, x, s, t);
-}
-function md5_ii(a, b, c, d, x, s, t)
-{
-  return md5_cmn(c ^ (b | (~d)), a, b, x, s, t);
-}
+function md5_cmn(q, a, b, x, s, t){return safe_add(bit_rol(safe_add(safe_add(a, q), safe_add(x, t)), s),b);}
+function md5_ff(a, b, c, d, x, s, t){return md5_cmn((b & c) | ((~b) & d), a, b, x, s, t);}
+function md5_gg(a, b, c, d, x, s, t){return md5_cmn((b & d) | (c & (~d)), a, b, x, s, t);}
+function md5_hh(a, b, c, d, x, s, t){return md5_cmn(b ^ c ^ d, a, b, x, s, t);}
+function md5_ii(a, b, c, d, x, s, t){return md5_cmn(c ^ (b | (~d)), a, b, x, s, t);}
 
 /*
  * Calculate the HMAC-MD5, of a key and some data
  */
-function core_hmac_md5(key, data)
-{
+function core_hmac_md5(key, data){
   var bkey = str2binl(key);
   if(bkey.length > 16) bkey = core_md5(bkey, key.length * chrsz);
 
@@ -153,8 +135,7 @@ function core_hmac_md5(key, data)
  * Add integers, wrapping at 2^32. This uses 16-bit operations internally
  * to work around bugs in some JS interpreters.
  */
-function safe_add(x, y)
-{
+function safe_add(x, y){
   var lsw = (x & 0xFFFF) + (y & 0xFFFF);
   var msw = (x >> 16) + (y >> 16) + (lsw >> 16);
   return (msw << 16) | (lsw & 0xFFFF);
@@ -163,8 +144,7 @@ function safe_add(x, y)
 /*
  * Bitwise rotate a 32-bit number to the left.
  */
-function bit_rol(num, cnt)
-{
+function bit_rol(num, cnt){
   return (num << cnt) | (num >>> (32 - cnt));
 }
 
@@ -172,8 +152,7 @@ function bit_rol(num, cnt)
  * Convert a string to an array of little-endian words
  * If chrsz is ASCII, characters >255 have their hi-byte silently ignored.
  */
-function str2binl(str)
-{
+function str2binl(str){
   var bin = Array();
   var mask = (1 << chrsz) - 1;
   for(var i = 0; i < str.length * chrsz; i += chrsz)
@@ -184,8 +163,7 @@ function str2binl(str)
 /*
  * Convert an array of little-endian words to a string
  */
-function binl2str(bin)
-{
+function binl2str(bin){
   var str = "";
   var mask = (1 << chrsz) - 1;
   for(var i = 0; i < bin.length * 32; i += chrsz)
@@ -196,8 +174,7 @@ function binl2str(bin)
 /*
  * Convert an array of little-endian words to a hex string.
  */
-function binl2hex(binarray)
-{
+function binl2hex(binarray){
   var hex_tab = hexcase ? "0123456789ABCDEF" : "0123456789abcdef";
   var str = "";
   for(var i = 0; i < binarray.length * 4; i++)
@@ -211,8 +188,7 @@ function binl2hex(binarray)
 /*
  * Convert an array of little-endian words to a base-64 string
  */
-function binl2b64(binarray)
-{
+function binl2b64(binarray){
   var tab = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
   var str = "";
   for(var i = 0; i < binarray.length * 4; i += 3)
@@ -230,199 +206,194 @@ function binl2b64(binarray)
 }
 
 //错误日志 level 1为错误 2为警告 0为正常日志
-function setLog(str,level){
-	if(WhaleSDK.debug == true){
-		if(level == 1){
-			console.log('%cWhaleSDK致命错误:'+str,'color:red');
-		}else if(level == 2){
-			console.log('%cWhaleSDK警告错误:'+str,'color:gray');
-		}else if(level == 0){
-			console.log('%cWhaleSDK运行日志:'+str,'color:gray');
-		}else{
-			console.log('%cWhaleSDK运行日志:'+str,'color:gray');
-		}
-	}
+function setLog(str, level) {
+    if (WhaleSDK.debug == true) {
+        if (level == 1) {
+            console.log('%cWhaleSDK致命错误:' + str, 'color:red');
+        } else if (level == 2) {
+            console.log('%cWhaleSDK警告错误:' + str, 'color:gray');
+        } else if (level == 0) {
+            console.log('%cWhaleSDK运行日志:' + str, 'color:gray');
+        } else {
+            console.log('%cWhaleSDK运行日志:' + str, 'color:gray');
+        }
+    }
 }
 
-function checkOrderObject(orderInfo){
+function checkOrderObject(orderInfo) {
 
-	var orderJson = JSON.parse(orderInfo);
-	var result = new Object();
-	result.result = true;
-	
-	//检查必须参数
-	var mustKey = ['productCode','goodsId','uid','userRoleId','userRoleName','userServer','userLevel','cpOrderNo','amount','subject','desc','callbackUrl','extrasParams'];
-	for (keyIndex in mustKey){
-		var keyName = mustKey[keyIndex];
-		if(!orderJson.hasOwnProperty(keyName) || (orderJson.hasOwnProperty(keyName) && orderJson[keyName]  == null) ){
-			result.result = false;
-			result.message = '调用pay()缺少必须参数:'+keyName;
-			return result;
-		}
-	}
-	
-	//检查参数是否合法 gameKey是否一致
-	if(orderJson.productCode != WhaleSDK.productCode){
-		setLog('调用pay()时传递的productCode和初始化init()时不一致',0);
-	}
-	
-	//uid userRoleId userRoleName userServer userLevel是否为空
-	if(orderJson.uid.length <= 0 || orderJson.userRoleId.length <= 0 || orderJson.userRoleName.length <= 0 || orderJson.userServer.length <= 0 || orderJson.userLevel.length <= 0){
-		result.result = false;
-		result.message = '调用pay()时如下参数:uid userRoleId userRoleName userServer userLevel 不能为空';
-		return result;
-	}
-	
-	//amount金额需为整数或浮点数
-	if(parseFloat(orderJson.amount) != orderJson.amount && parseInt(orderJson.amount) != orderJson.amount ){
-		result.result = false;
-		result.message = '调用pay()时下单金额需为整数或浮点数';
-		return result;
-	}
-	
-	//subject为必传
-	if(orderJson.subject.length <= 0){
-		result.result = false;
-		result.message = '调用pay()时下单如下参数:subject 不能为空';
-		return result;
-	}
-	
-	return result;
+    var orderJson = JSON.parse(orderInfo);
+    var result = new Object();
+    result.result = true;
+
+    //检查必须参数
+    var mustKey = ['productCode', 'goodsId', 'uid', 'userRoleId', 'userRoleName', 'userServer', 'userLevel', 'cpOrderNo', 'amount', 'subject', 'desc', 'callbackUrl', 'extrasParams'];
+    for (keyIndex in mustKey) {
+        var keyName = mustKey[keyIndex];
+        if (!orderJson.hasOwnProperty(keyName) || (orderJson.hasOwnProperty(keyName) && orderJson[keyName] == null)) {
+            result.result = false;
+            result.message = '调用pay()缺少必须参数:' + keyName;
+            return result;
+        }
+    }
+
+    //检查参数是否合法 gameKey是否一致
+    if (orderJson.productCode != WhaleSDK.productCode) {
+        setLog('调用pay()时传递的productCode和初始化init()时不一致', 0);
+    }
+
+    //uid userRoleId userRoleName userServer userLevel是否为空
+    if (orderJson.uid.length <= 0 || orderJson.userRoleId.length <= 0 || orderJson.userRoleName.length <= 0 || orderJson.userServer.length <= 0 || orderJson.userLevel.length <= 0) {
+        result.result = false;
+        result.message = '调用pay()时如下参数:uid userRoleId userRoleName userServer userLevel 不能为空';
+        return result;
+    }
+
+    //amount金额需为整数或浮点数
+    if (parseFloat(orderJson.amount) != orderJson.amount && parseInt(orderJson.amount) != orderJson.amount) {
+        result.result = false;
+        result.message = '调用pay()时下单金额需为整数或浮点数';
+        return result;
+    }
+
+    //subject为必传
+    if (orderJson.subject.length <= 0) {
+        result.result = false;
+        result.message = '调用pay()时下单如下参数:subject 不能为空';
+        return result;
+    }
+
+    return result;
 }
 
-function checkRoleObject(roleInfo){
-	
-	var roleJson = JSON.parse(roleInfo);
-	var result = new Object();
-	result.result = true;
+function checkRoleObject(roleInfo) {
 
-	//检查必须参数
-	var mustKey = ['serverId','serverName','userRoleId','userRoleName','userRoleBalance','vipLevel','userRoleLevel','partyName'];
-	for (keyIndex in mustKey){
-		var keyName = mustKey[keyIndex];
-		if(!roleJson.hasOwnProperty(keyName) ){
-			result.result = false;
-			result.message = '调用updateGameRoleInfo()缺少必须参数:'+keyName;
-			return result;
-		}
-	}
-	
-	//判断类型 vipLevel userRoleBalance userRoleLevel需为int
-	if(parseInt(roleJson.vipLevel) !=  roleJson.vipLevel){
-		result.result = false;
-		result.message = '调用updateGameRoleInfo()时传递vipLevel类型需为int';
-		return result;
-	}
-	
-	if(parseInt(roleJson.userRoleBalance) !=  roleJson.userRoleBalance){
-		result.result = false;
-		result.message = '调用updateGameRoleInfo()时传递userRoleBalance类型需为int';
-		return result;
-	}
-	
-	if(parseInt(roleJson.userRoleLevel) !=  roleJson.userRoleLevel){
-		result.result = false;
-		result.message = '调用updateGameRoleInfo()时传递userRoleLevel类型需为int';
-		return result;
-	}
-	
-	return result;
+    var roleJson = JSON.parse(roleInfo);
+    var result = new Object();
+    result.result = true;
+
+    //检查必须参数
+    var mustKey = ['serverId', 'serverName', 'userRoleId', 'userRoleName', 'userRoleBalance', 'vipLevel', 'userRoleLevel', 'partyName'];
+    for (keyIndex in mustKey) {
+        var keyName = mustKey[keyIndex];
+        if (!roleJson.hasOwnProperty(keyName)) {
+            result.result = false;
+            result.message = '调用updateGameRoleInfo()缺少必须参数:' + keyName;
+            return result;
+        }
+    }
+
+    //判断类型 vipLevel userRoleBalance userRoleLevel需为int
+    if (parseInt(roleJson.vipLevel) != roleJson.vipLevel) {
+        result.result = false;
+        result.message = '调用updateGameRoleInfo()时传递vipLevel类型需为int';
+        return result;
+    }
+
+    if (parseInt(roleJson.userRoleBalance) != roleJson.userRoleBalance) {
+        result.result = false;
+        result.message = '调用updateGameRoleInfo()时传递userRoleBalance类型需为int';
+        return result;
+    }
+
+    if (parseInt(roleJson.userRoleLevel) != roleJson.userRoleLevel) {
+        result.result = false;
+        result.message = '调用updateGameRoleInfo()时传递userRoleLevel类型需为int';
+        return result;
+    }
+
+    return result;
 }
 
-//注册事件监听
-window.addEventListener('message',function(e){
+function getWhaleSDKOrderData(orderData, callback) {
 
-	var messageData = e.data;
-	try{
-		var messageObject = JSON.parse(messageData);
-	}catch(e){
-		var messageObject = null;
-	}
-	if(messageObject == null || typeof(messageObject) != 'object' || !messageObject.hasOwnProperty('func')){
-		return;
-	}
+    orderData.productCode = WhaleSDK.productCode;
+    orderData.channelCode = '301';
+    if (!orderData.hasOwnProperty('username') || orderData.username.length <= 0) {
+        orderData.username = orderData.uid;
+    }
+    var rebackObj = new Object();
+    rebackObj.status = false;
+    rebackObj.orderNo = '';
+    $.ajax({
+        type: "POST",
+        url: 'https://sdkapi02.quicksdk.net/webGame/ajaxGetOrderNo',
+        data: orderData,
+        dataType: "json",
+        success: function(respData) {
+            if (respData == null || typeof(respData) != 'object') {
+                rebackObj.message = '请求接口失败无法获取响应';
+                return callback(rebackObj);
+            }
+            if (!respData.hasOwnProperty('status') || respData.status == false) {
+                if (rebackObj.message != undefined || rebackObj.message == '' || !respData.hasOwnProperty('message')) {
+                    rebackObj.message = '请求接口失败';
+                } else {
+                    rebackObj.message = respData.message;
+                }
+                return callback(rebackObj);
+            }
+            rebackObj.orderNo = respData.data.orderNo;
+            rebackObj.status = true;
+            return callback(rebackObj);
+        },
+        error: function() {
+            rebackObj.status = false;
+            rebackObj.message = "接口请求失败";
+            return callback(rebackObj);
+        }
+    });
+}
 
-	var funcName = messageObject.func;
-	switch(funcName){
-		
-		//渠道驱动发回的登录通知
-		case 'Notify_Whale_Login':
+function ajaxUploadGameRole(roleInfo, callback) {
+    var rebackObj = new Object();
+    rebackObj.status = false;
+    rebackObj.data = '';
+    rebackObj.message = "";
+    var roleObject = JSON.parse(roleInfo);
+    roleObject.productCode = WhaleSDK.productCode;
+    roleObject.channelCode = '301';
 
-			//将通知发给游戏
-			var resObject = messageObject.params;
-			setLog('收到渠道通知' + (JSON.stringify(resObject)),0 );
-			if(typeof(resObject) == 'object' && resObject.status == false ){
-				
-				//渠道返回的对象格式有误
-				var errMessage = '';
-				if(resObject.hasOwnProperty('message')){
-					errMessage = resObject.message;
-				}
-				setLog('客户端登录失败,失败消息:' + errMessage,2);
-				var errorObject = new Object();
-				errorObject.status = false;
-				errorObject.quickToken = '';
-				errorObject.data = new Object();
-				errorObject.data.uid = '';
-				errorObject.data.username = '';
-				errorObject.data.token = '';
+    if (!roleObject.hasOwnProperty('uid') || roleObject.uid.length <= 0) {
+        rebackObj.message = "调用失败:缺少uid";
+        return callback(rebackObj);
+    }
 
-				CallbackLoginFun(resObject);
-				
-			}else if(typeof(resObject) == 'object' && resObject.status == true && resObject.hasOwnProperty('data') && resObject.data.hasOwnProperty('uid') && resObject.hasOwnProperty('channelCode') ){
-				
-				setLog('客户端登录成功,请求服务器验证',0 );
-				
-				//发送POST请求
-				var checkLoginObject = new Object();
-				var username = resObject.data.uid;
-				var channelToken = '';
-				if(resObject.hasOwnProperty('data') && resObject.data.hasOwnProperty('username')){
-					username = resObject.data.username;
-				}
-				if(resObject.hasOwnProperty('data') && resObject.data.hasOwnProperty('token')){
-					channelToken = resObject.data.token;
-				}
-				
-				var successObject = new Object();
-				successObject.status = true;
-				successObject.quickToken = channelToken;
-				successObject.data = new Object();
-				successObject.data.uid = resObject.data.uid;
-				successObject.data.username = resObject.data.username;
-				successObject.data.token = resObject.data.token;
-				setLog('渠道信息登录校验成功:' + JSON.stringify(successObject),0);
-				CallbackLoginFun(successObject);
-				
-			}else{
-				//渠道返回的对象格式有误
-				setLog('渠道驱动文件返回的通知对象格式有误',1);
-				var errorObject = new Object();
-				errorObject.status = false;
-				errorObject.quickToken = '';
-				errorObject.data = new Object();
-				errorObject.data.uid = '';
-				errorObject.data.username = '';
-				errorObject.data.token = '';
-				CallbackLoginFun(resObject);
-			}
+    if (!roleObject.hasOwnProperty('username') || roleObject.username.length <= 0) {
+        rebackObj.message = "调用失败:缺少username";
+        return callback(rebackObj);
+    }
 
-			break;
-			
-			case 'Notify_Whale_GetUserInfo':
-				CallbackGetUserInfoFun(messageObject.params);
-				break;
-				
-			case 'Notify_Whale_payStatus':
-				CallbackPayFun(messageObject.params);
-				break;
-				
-			case 'Notify_Whale_Logout':
-				CallbackLogout(messageObject.params);
-				break;
-	}
-	
-},false);
+    $.ajax({
+        type: "POST",
+        url: 'https://sdkapi02.quicksdk.net/webGame/ajaxUploadGameRoleInfo',
+        data: roleObject,
+        dataType: "json",
+        success: function(respData) {
+            if (respData == null || typeof(respData) != 'object') {
+                rebackObj.message = '请求接口失败无法获取响应';
+                return callback(rebackObj);
+            }
+            if (!respData.hasOwnProperty('status') || respData.status == false) {
+                if (rebackObj.message != undefined || rebackObj.message == '' || !respData.hasOwnProperty('message')) {
+                    rebackObj.message = '请求接口失败';
+                } else {
+                    rebackObj.message = respData.message;
+                }
+                return callback(rebackObj);
+            }
+            rebackObj.data = respData;
+            rebackObj.status = true;
+            return callback(rebackObj);
+        },
+        error: function() {
+            rebackObj.status = false;
+            rebackObj.message = "接口请求失败";
+            return callback(rebackObj);
+        }
+
+    });
+}
 
 //定义sdk对象
 var CallbackLoginFun = null;
@@ -430,238 +401,244 @@ var CallbackGetUserInfoFun = null;
 var CallbackPayFun = null;
 var CallbackLogout = null;
 var WhaleSDK = {
-	productCode:null,
-	productKey:null,
-	isShell:false,
-	debug:true,
+    productCode: null,
+    productKey: null,
+    isShell: false,
+    debug: true,
 
-	//初始化
-	init:function(sProductCode,sProductKey,sDebug){
-		this.productCode = sProductCode;
-		this.productKey = sProductKey;
-		this.debug = sDebug;
-		
-		//调用各自渠道的init
-		var params = new Object();
-		params.productCode = this.productCode;
-		params.productKey = this.productKey;
-		params.debug = this.debug;
-		var messageObject = new Object();
-		messageObject.func = 'Event_Whale_Init';
-		messageObject.params = params;
-		window.parent.postMessage(JSON.stringify(messageObject),'*'); 
-		setLog('调用渠道SDK初始化接口',0);
-		return true;
-	},
+    //初始化
+    init: function(sProductCode, sProductKey, sDebug) {
+        this.productCode = sProductCode;
+        this.productKey = sProductKey;
+        this.debug = sDebug;
 
-	//调起支付
-	pay:function(orderInfo,callback){
+        //调用各自渠道的init
+        var params = new Object();
+        params.productCode = this.productCode;
+        params.productKey = this.productKey;
+        params.debug = this.debug;
+        var messageObject = new Object();
+        messageObject.func = 'Event_Whale_Init';
+        messageObject.params = params;
+        window.parent.postMessage(JSON.stringify(messageObject), '*');
+        setLog('调用渠道SDK初始化接口', 0);
+        return true;
+    },
 
-		//返回对象
-		CallbackPayFun = callback;
-		var returnObject = new Object();
-		
-		//检查是否已初始化
-		if(this.productCode == null || this.productKey == null){
-			setLog('SDK未完成初始化便调用支付',1);
-		}
-		
-		//检查订单对象
-		var orderChecker = checkOrderObject(orderInfo);
-		if(!orderChecker.result){
-			setLog(orderChecker.message,1);
-		}
+    //调起支付
+    pay: function(orderInfo, callback) {
 
-		//向WhaleSDK下单获取WhaleSDK订单
-		var orderData = JSON.parse(orderInfo);
-		getWhaleSDKOrderData(orderData,function(getOrderData){
-											
-			if(getOrderData.status == false || !getOrderData.hasOwnProperty('orderNo')){
-				
-				//0支付成功 1支付失败 2取消支付 3下单失败
-				var orderType = new Object();
-				orderType.payStatus = 3;
-				returnObject.status = false;
-				returnObject.data = orderType;
-				returnObject.message = '下单失败:' + getOrderData.message;
-				setLog(returnObject.message,1);
-				if(callback != null){
-					return callback(returnObject);
-				}
-			}
-			
-			//调用父iFrame下单页面
-			orderData.orderNo = getOrderData.orderNo;
-			var messageObject = new Object();
-			messageObject.func = 'Event_Whale_Pay';
-			messageObject.params = orderData;
-			window.parent.postMessage(JSON.stringify(messageObject),'*');
-			
-		});
-	},
-	
-	//控制浮标
-	toggleModalMenu:function(status){
-		var messageObject = new Object();
-		messageObject.func = 'Event_Whale_ToggleMenu';
-		messageObject.params = status;
-		window.parent.postMessage(JSON.stringify(messageObject),'*');
-	},
-	
-	//获取用户信息
-	getUserInfo:function(callback){
-		CallbackGetUserInfoFun = callback;
-		var messageObject = new Object();
-		messageObject.func = 'Event_Whale_GetUserInfo';
-		window.parent.postMessage(JSON.stringify(messageObject),'*');
-	},
+        //返回对象
+        CallbackPayFun = callback;
+        var returnObject = new Object();
 
-	//调用登录
-	login:function(callback){
-		CallbackLoginFun = callback;
-		var messageObject = new Object();
-		messageObject.func = 'Event_Whale_Login';
-		messageObject.callbackFun = 'Callback_Whale_Login';
-		window.parent.postMessage(JSON.stringify(messageObject),'*');
-	},
+        //检查是否已初始化
+        if (this.productCode == null || this.productKey == null) {
+            setLog('SDK未完成初始化便调用支付', 1);
+        }
 
-	//登出
-	logout:function(callback){
-		CallbackLogout = callback;
-		var messageObject = new Object();
-		messageObject.func = 'Event_Whale_Logout';
-		window.parent.postMessage(JSON.stringify(messageObject),'*');
-	},
-	
-	//上传角色信息
-	uploadGameRoleInfo:function(roleInfo,callback){
-		
-		var roleObject = new Object();
-		
-		//检查是否已初始化
-		if(this.productCode == null || this.productKey == null){
-			setLog('SDK未完成初始化',1);
-		}
-		
-		var roleChecker = checkRoleObject(roleInfo);
-		if(!roleChecker.result){
-			setLog(roleChecker.message,1);
-		}
-		
-		var messageObject = new Object();
-		messageObject.func = 'Event_Whale_uploadRole';
-		messageObject.params = roleInfo;
-		window.parent.postMessage(JSON.stringify(messageObject),'*');
-		
-		ajaxUploadGameRole(roleInfo,function(resultObject){
-			callback(resultObject);
-		});
-		
-		//判断UA == 
-		if(navigator.userAgent == 'WhaleBrowser'){
-			var sendObject = new Object();
-			sendObject.action = 'playerActive';
-			sendObject.data = JSON.parse(roleInfo);
-			var sendString = JSON.stringify(sendObject);
-			window.webkit.messageHandlers.eventComplete.postMessage(sendString);	
-		}else if(navigator.userAgent == 'WhaleBrowserAndroid'){
-			var sendObject = new Object();
-			sendObject.action = 'playerActive';
-			sendObject.data = JSON.parse(roleInfo);
-			var sendString = JSON.stringify(sendObject);
-			CallAndroidFunc.eventComplete(sendString);
-			
-		}
-	},
-	
+        //检查订单对象
+        var orderChecker = checkOrderObject(orderInfo);
+        if (!orderChecker.result) {
+            setLog(orderChecker.message, 1);
+        }
+
+        //向WhaleSDK下单获取WhaleSDK订单
+        var orderData = JSON.parse(orderInfo);
+        getWhaleSDKOrderData(orderData, function(getOrderData) {
+
+            if (getOrderData.status == false || !getOrderData.hasOwnProperty('orderNo')) {
+
+                //0支付成功 1支付失败 2取消支付 3下单失败
+                var orderType = new Object();
+                orderType.payStatus = 3;
+                returnObject.status = false;
+                returnObject.data = orderType;
+                returnObject.message = '下单失败:' + getOrderData.message;
+                setLog(returnObject.message, 1);
+                if (callback != null) {
+                    return callback(returnObject);
+                }
+            }
+
+            //调用父iFrame下单页面
+            orderData.orderNo = getOrderData.orderNo;
+            var messageObject = new Object();
+            messageObject.func = 'Event_Whale_Pay';
+            messageObject.params = orderData;
+            window.parent.postMessage(JSON.stringify(messageObject), '*');
+
+        });
+    },
+
+    //控制浮标
+    toggleModalMenu: function(status) {
+        var messageObject = new Object();
+        messageObject.func = 'Event_Whale_toggleMenu';
+        messageObject.params = status;
+        window.parent.postMessage(JSON.stringify(messageObject), '*');
+    },
+
+    //获取用户信息
+    getUserInfo: function(callback) {
+        CallbackGetUserInfoFun = callback;
+        var messageObject = new Object();
+        messageObject.func = 'Event_Whale_GetUserInfo';
+        window.parent.postMessage(JSON.stringify(messageObject), '*');
+    },
+
+    //调用登录
+    login: function(callback) {
+        CallbackLoginFun = callback;
+        var messageObject = new Object();
+        messageObject.func = 'Event_Whale_Login';
+        messageObject.callbackFun = 'Callback_Whale_Login';
+        window.parent.postMessage(JSON.stringify(messageObject), '*');
+    },
+
+    //登出
+    logout: function(callback) {
+        CallbackLogout = callback;
+        var messageObject = new Object();
+        messageObject.func = 'Event_Whale_Logout';
+        window.parent.postMessage(JSON.stringify(messageObject), '*');
+    },
+
+    //上传角色信息
+    uploadGameRoleInfo: function(roleInfo, callback) {
+
+        var roleObject = new Object();
+
+        //检查是否已初始化
+        if (!this.productCode || !this.productKey) {
+            setLog('SDK未完成初始化', 1);
+            return
+        }
+
+        var roleChecker = checkRoleObject(roleInfo);
+        if (!roleChecker.result) {
+            setLog(roleChecker.message, 1);
+            return
+        }
+
+        var messageObject = new Object();
+        messageObject.func = 'Event_Whale_uploadRole';
+        messageObject.params = roleInfo;
+        window.parent.postMessage(JSON.stringify(messageObject), '*');
+
+        ajaxUploadGameRole(roleInfo, function(resultObject) {
+            callback(resultObject);
+        });
+
+        //判断UA == 
+        if (navigator.userAgent == 'WhaleBrowser') {
+            var sendObject = new Object();
+            sendObject.action = 'playerActive';
+            sendObject.data = JSON.parse(roleInfo);
+            var sendString = JSON.stringify(sendObject);
+            window.webkit.messageHandlers.eventComplete.postMessage(sendString);
+        } else if (navigator.userAgent == 'WhaleBrowserAndroid') {
+            var sendObject = new Object();
+            sendObject.action = 'playerActive';
+            sendObject.data = JSON.parse(roleInfo);
+            var sendString = JSON.stringify(sendObject);
+            CallAndroidFunc.eventComplete(sendString);
+
+        }
+    },
 }
 
-function getWhaleSDKOrderData(orderData,callback){
-	
-	orderData.productCode = WhaleSDK.productCode;
-	orderData.channelCode = '301';
-	if(!orderData.hasOwnProperty('username') || orderData.username.length <= 0 ){
-		orderData.username = orderData.uid;
-	}
-	var rebackObj = new Object();
-	rebackObj.status=false;
-	rebackObj.orderNo = '';
-	$.ajax({
-		type:"POST",
-		url:'https://sdkapi02.quicksdk.net/webGame/ajaxGetOrderNo',
-		data:orderData,
-		dataType:"json",
-		success:function(respData){
-			if(respData == null || typeof(respData) != 'object'){
-				rebackObj.message = '请求接口失败无法获取响应';
-				return callback(rebackObj);
-			}
-			if(!respData.hasOwnProperty('status') || respData.status == false ){
-				if(rebackObj.message!=undefined || rebackObj.message=='' || !respData.hasOwnProperty('message')){
-					rebackObj.message = '请求接口失败';
-				}else{
-					rebackObj.message=respData.message;
-				}
-				return callback(rebackObj);
-			}
-			rebackObj.orderNo = respData.data.orderNo;
-			rebackObj.status = true;
-			return callback(rebackObj);
-		},
-		error:function(){
-			rebackObj.status=false;
-			rebackObj.message="接口请求失败";
-			return callback(rebackObj);
-		}	
-	});
-}
+//注册事件监听
+window.addEventListener('message', function(e) {
 
-function ajaxUploadGameRole(roleInfo,callback){
-	var rebackObj=new Object();
-	rebackObj.status=false;
-	rebackObj.data='';
-	rebackObj.message="";
-	var roleObject = JSON.parse(roleInfo);
-	roleObject.productCode = WhaleSDK.productCode;
-	roleObject.channelCode = '301';
-	
-	if(!roleObject.hasOwnProperty('uid') || roleObject.uid.length <= 0 ){
-		rebackObj.message="调用失败:缺少uid";
-		return callback(rebackObj);
-	}
-	
-	if(!roleObject.hasOwnProperty('username') || roleObject.username.length <= 0 ){
-		rebackObj.message="调用失败:缺少username";
-		return callback(rebackObj);
-	}
-	
-	$.ajax({
-		type:"POST",
-		url:'https://sdkapi02.quicksdk.net/webGame/ajaxUploadGameRoleInfo',
-		data:roleObject,
-		dataType:"json",
-		success:function(respData){
-			if(respData == null || typeof(respData) != 'object'){
-				rebackObj.message = '请求接口失败无法获取响应';
-				return callback(rebackObj);
-			}
-			if(!respData.hasOwnProperty('status') || respData.status == false ){
-				if(rebackObj.message!=undefined || rebackObj.message=='' || !respData.hasOwnProperty('message')){
-					rebackObj.message = '请求接口失败';
-				}else{
-					rebackObj.message=respData.message;
-				}
-				return callback(rebackObj);
-			}
-			rebackObj.data = respData;
-			rebackObj.status = true;
-			return callback(rebackObj);
-		},
-		error:function(){
-			rebackObj.status=false;
-			rebackObj.message="接口请求失败";
-			return callback(rebackObj);
-		}
-		
-	});
-}
+    var messageData = e.data;
+    try {
+        var messageObject = JSON.parse(messageData);
+    } catch (e) {
+        var messageObject = null;
+    }
+    if (messageObject == null || typeof(messageObject) != 'object' || !messageObject.hasOwnProperty('func')) {
+        return;
+    }
+
+    var funcName = messageObject.func;
+    switch (funcName) {
+
+        //渠道驱动发回的登录通知
+        case 'Notify_Whale_Login':
+
+            //将通知发给游戏
+            var resObject = messageObject.params;
+            setLog('收到渠道通知' + (JSON.stringify(resObject)), 0);
+            if (typeof(resObject) == 'object' && resObject.status == false) {
+
+                //渠道返回的对象格式有误
+                var errMessage = '';
+                if (resObject.hasOwnProperty('message')) {
+                    errMessage = resObject.message;
+                }
+                setLog('客户端登录失败,失败消息:' + errMessage, 2);
+                var errorObject = new Object();
+                errorObject.status = false;
+                errorObject.quickToken = '';
+                errorObject.data = new Object();
+                errorObject.data.uid = '';
+                errorObject.data.username = '';
+                errorObject.data.token = '';
+
+                CallbackLoginFun(resObject);
+
+            } else if (typeof(resObject) == 'object' && resObject.status == true && resObject.hasOwnProperty('data') && resObject.data.hasOwnProperty('uid') && resObject.hasOwnProperty('channelCode')) {
+
+                setLog('客户端登录成功,请求服务器验证', 0);
+
+                //发送POST请求
+                var checkLoginObject = new Object();
+                var username = resObject.data.uid;
+                var channelToken = '';
+                if (resObject.hasOwnProperty('data') && resObject.data.hasOwnProperty('username')) {
+                    username = resObject.data.username;
+                }
+                if (resObject.hasOwnProperty('data') && resObject.data.hasOwnProperty('token')) {
+                    channelToken = resObject.data.token;
+                }
+
+                var successObject = new Object();
+                successObject.status = true;
+                successObject.quickToken = channelToken;
+                successObject.data = new Object();
+                successObject.data.uid = resObject.data.uid;
+                successObject.data.username = resObject.data.username;
+                successObject.data.token = resObject.data.token;
+                setLog('渠道信息登录校验成功:' + JSON.stringify(successObject), 0);
+                CallbackLoginFun(successObject);
+
+            } else {
+                //渠道返回的对象格式有误
+                setLog('渠道驱动文件返回的通知对象格式有误', 1);
+                var errorObject = new Object();
+                errorObject.status = false;
+                errorObject.quickToken = '';
+                errorObject.data = new Object();
+                errorObject.data.uid = '';
+                errorObject.data.username = '';
+                errorObject.data.token = '';
+                CallbackLoginFun(resObject);
+            }
+
+            break;
+
+        case 'Notify_Whale_GetUserInfo':
+            CallbackGetUserInfoFun(messageObject.params);
+            break;
+
+        case 'Notify_Whale_payStatus':
+            CallbackPayFun(messageObject.params);
+            break;
+
+        case 'Notify_Whale_Logout':
+            CallbackLogout(messageObject.params);
+            break;
+    }
+}, false);
+
