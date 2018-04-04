@@ -512,13 +512,11 @@ var WhaleSDK = {
         //检查是否已初始化
         if (!this.productCode || !this.productKey) {
             setLog('SDK未完成初始化', 1);
-            return
         }
 
         var roleChecker = checkRoleObject(roleInfo);
         if (!roleChecker.result) {
             setLog(roleChecker.message, 1);
-            return
         }
 
         var messageObject = new Object();
