@@ -604,9 +604,6 @@ window.addEventListener('message',function(e){
 			triggerAd_updateRole(saveRoleInfo);
 			break;
 			
-		case 'Event_OpenService':
-			openOnlineServiceCallback(messageObject.params);
-			break;
 	}
 },false);
 

@@ -461,7 +461,7 @@ var WhaleSDK = {
                 }
             }
 
-            //调用父iFrame下单页面
+            //调用渠道下单处理方法
             orderData.orderNo = getOrderData.orderNo;
             var messageObject = new Object();
             messageObject.func = 'Event_Whale_Pay';
@@ -474,12 +474,12 @@ var WhaleSDK = {
     //控制浮标
     toggleModalMenu: function(status) {
         var messageObject = new Object();
-        messageObject.func = 'Event_Whale_toggleMenu';
+        messageObject.func = 'Event_Whale_ToggleMenu';
         messageObject.params = status;
         window.parent.postMessage(JSON.stringify(messageObject), '*');
     },
 
-    //获取用户信息
+    //获取渠道用户信息
     getUserInfo: function(callback) {
         CallbackGetUserInfoFun = callback;
         var messageObject = new Object();
