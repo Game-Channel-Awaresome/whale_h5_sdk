@@ -436,10 +436,6 @@
                 resetTimer();
             }
 
-            // if (distanceX > config.tapMaxDistance) {
-            //  event.preventDefault();
-            // }
-
         };
 
         //触屏结束函数
@@ -543,7 +539,6 @@ var globalLayerIndex;
 var globalPageIndex;
 
 function openDialog(objd,classname){
-	//controle.log(window.orientation);
 	var hengCss='border: none; -webkit-animation-duration: .5s; animation-duration: .5s;border-radius:4px;-webkit-border-radius:4px;';
 	var html=objd.innerHTML;
 	globalLayerIndex=layer.open({
@@ -554,61 +549,6 @@ function openDialog(objd,classname){
 		className: classname
 	});
 }
-
-var saveRoleInfo = null;
-window.addEventListener('message',function(e){
-	var messageData = e.data;
-	try{
-		var messageObject = JSON.parse(messageData);
-	}catch(e){
-		var messageObject = null;
-	}
-	if(messageObject == null || typeof(messageObject) != 'object' || !messageObject.hasOwnProperty('func')){
-		return;
-	}
-
-	var funcName = messageObject.func;
-	switch(funcName){
-			
-		case 'Event_Channel_Login':
-			showLoginViews(function(payRetrun){
-				var returnObject = new Object();
-				returnObject.func = 'Callback_Channel_Login';
-				returnObject.params = payRetrun;
-				document.getElementById('gameFrame').contentWindow.postMessage(JSON.stringify(returnObject),'*');
-			});
-			break;
-			
-		case 'Event_Channel_Pay':
-			var params = JSON.parse(messageObject.params);
-			showPayViews(params,function(payRetrun){
-				
-				var returnObject = new Object();
-				returnObject.func = 'Callback_Channel_Pay';
-				returnObject.params = payRetrun;
-				document.getElementById('gameFrame').contentWindow.postMessage(JSON.stringify(returnObject),'*');
-				
-			});
-			break;
-			
-		case 'Event_Channel_LogOut':
-			showLogOutViews();
-			break;
-		
-		case 'Event_Channel_toggleModalMenu':
-			showToggleModalMenu(messageObject.params);
-			break;
-			
-		case 'Event_SaveRole':
-			saveRoleInfo = messageObject.params; 
-			triggerAd_updateRole(saveRoleInfo);
-			break;
-        case 'Event_OpenService':
-            openOnlineServiceCallback(messageObject.params);
-            break;
-			
-	}
-},false);
 
 function ajaxRequestData(url,params,callback){
 	var rebackObj=new Object();
@@ -646,13 +586,6 @@ function ajaxRequestData(url,params,callback){
 		
 	});
 }
-$(document).on("click",".box-close",function(){
-	layer.close(globalLayerIndex);
-});
-
-$(document).on("click",".page-close",function(){
-	layer.close(globalPageIndex);
-});
 //用户名检测
 function checkUname(uname){
 	var rebackResult=new Object();
@@ -683,7 +616,6 @@ function checkPhone(phone){
 	rebackResult.status=true;
 	return rebackResult;
 }
-
 //错误日志 level 1为错误 0为警告
 function setLog(str,level){
     if(level == 1){
@@ -696,3 +628,65 @@ function setLog(str,level){
         console.log('%UI层运行日志:'+str,'color:gray');
     }
 }
+
+var saveRoleInfo = null;
+window.addEventListener('message',function(e){
+    var messageData = e.data;
+    try{
+        var messageObject = JSON.parse(messageData);
+    }catch(e){
+        var messageObject = null;
+    }
+    if(messageObject == null || typeof(messageObject) != 'object' || !messageObject.hasOwnProperty('func')){
+        return;
+    }
+
+    var funcName = messageObject.func;
+    switch(funcName){
+            
+        case 'Event_Channel_Login':
+            showLoginViews(function(payRetrun){
+                var returnObject = new Object();
+                returnObject.func = 'Callback_Channel_Login';
+                returnObject.params = payRetrun;
+                document.getElementById('gameFrame').contentWindow.postMessage(JSON.stringify(returnObject),'*');
+            });
+            break;
+            
+        case 'Event_Channel_Pay':
+            var params = JSON.parse(messageObject.params);
+            showPayViews(params,function(payRetrun){
+                
+                var returnObject = new Object();
+                returnObject.func = 'Callback_Channel_Pay';
+                returnObject.params = payRetrun;
+                document.getElementById('gameFrame').contentWindow.postMessage(JSON.stringify(returnObject),'*');
+                
+            });
+            break;
+            
+        case 'Event_Channel_LogOut':
+            showLogOutViews();
+            break;
+        
+        case 'Event_Channel_toggleModalMenu':
+            showToggleModalMenu(messageObject.params);
+            break;
+            
+        case 'Event_SaveRole':
+            saveRoleInfo = messageObject.params; 
+            triggerAd_updateRole(saveRoleInfo);
+            break;
+        case 'Event_OpenService':
+            openOnlineServiceCallback(messageObject.params);
+            break;
+            
+    }
+},false);
+$(document).on("click",".box-close",function(){
+    layer.close(globalLayerIndex);
+});
+
+$(document).on("click",".page-close",function(){
+    layer.close(globalPageIndex);
+});

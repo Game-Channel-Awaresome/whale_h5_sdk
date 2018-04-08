@@ -3,6 +3,8 @@
 
 <head>
     <meta charset="utf-8">
+    <title>测试h5-sdk</title>
+    <meta name="description" content="">    
     <meta id="viewport" name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no,minimal-ui">
     <meta id="safari-app-capable" name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
@@ -16,15 +18,7 @@
     <meta name="360-fullscreen" content="true">
     <meta name="browsermode" content="application">
     <link rel="dns-prefetch" href="//">
-    <link rel="icon" type="image/x-icon" href="" />
-    <link rel="icon" sizes="192x192" href="">
-    <link rel="shortcut icon" type="image/x-icon" href="" />
-    <title>测试h5-sdk</title>
-    <meta name="description" content="">
-    <link rel="apple-touch-icon" sizes="57x57" href="" />
-    <link rel="apple-touch-icon" sizes="72x72" href="" />
-    <link rel="apple-touch-icon" sizes="114x114" href="" />
-    <link rel="apple-touch-icon" sizes="144x144" href="" />
+
     <link rel="stylesheet" type="text/css" href="/resource/css/base.css" />
     <script src="/resource/js/zepto.min.js"></script>
     <script src="/resource/plugin/layerMobile/layer.js"></script>
@@ -290,7 +284,7 @@
 //浮标悬浮球
 var assistiveLeft, assistiveRight, timerid;
 
-var stickEdge = function(el) {
+function stickEdge(el) {
     var left = parseInt($(el).css("left")) || 0,
         width = parseInt(el.offsetWidth) || 0,
         windowWith = (document.documentElement || document.body).offsetWidth;
@@ -335,10 +329,10 @@ mTouch('.assistive-wrap').on('swipestart', function() {
     })
     .on('swipeend', function() {
         stickEdge(this);
-        assisL = parseInt($(this).css("left")) || 0;
-        assisT = parseInt($(this).css("top")) || 0;
-        docW = $(document).width();
-        menuW = $(".menuList.assistive-menu .menulist-item").length;
+        var assisL = parseInt($(this).css("left")) || 0;
+        var assisT = parseInt($(this).css("top")) || 0;
+        var docW = $(document).width();
+        var menuW = $(".menuList.assistive-menu .menulist-item").length;
         if (assisL > docW / 2) {
             menuListLeft = assisL - 70 - 40 * menuW + 40;
             $(".menuList.assistive-menu").addClass("right").css({
@@ -372,8 +366,10 @@ if (isWeixin) {
 }
 
 
-//调起支付页面
+//cp支付参数
 var orderInfo;
+
+//回调专用变量
 var callbackFun = null;
 
 //调用支付界面
@@ -469,7 +465,7 @@ function showServiceViews(callback) {
 //调用登录界面
 function showLoginViews(callback) {
     callbackFun = callback;
-    openDialog(document.getElementById("loginBox"), "wsdk-login-dialog"); //登录
+    openDialog(document.getElementById("loginBox"), "wsdk-login-dialog"); 
 }
 
 //支付之后调用登录界面
@@ -510,7 +506,8 @@ function showLogOutViews() {
     });
     return false;
 }
-//调用注册账号界面
+
+//调用修改密码/注册账号界面
 function showRegBox(regboxId) {
     layer.close(globalLayerIndex);
     openDialog(document.getElementById(regboxId), "wsdk-" + regboxId + "-dialog");
