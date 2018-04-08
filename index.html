@@ -62,12 +62,10 @@
                 <div class="payTitle">支付中心</div>
                 <div style="height: 1%;"></div>
                 <div class="pay-goods-name">
-                    <span class="goodsprice" id="goodsprice"></span>
+                    <span class="goodsprice"></span>
                     <span>商品：</span>
-                    <span class="goodname" id="goodsname"></span>
+                    <span class="goodsname"></span>
                 </div>
-                <div style="height: 1%;"></div>
-                <div style="height: 1%;"></div>
                 <h4 class="pay-type-title">选择支付方式</h4>
                 <div class="pay-type-box">
                     <div class="pay-type-items" id="pay-type-items">
@@ -86,7 +84,7 @@
                     </div>
                 </div>
                 <div class="pay-type-submit tc">
-                    <button type="submit" id="payButton" class="form-item-submit">立即支付</button>
+                    <button type="submit" class="form-item-submit payButton">立即支付</button>
                 </div>
             </div>
         </form>
@@ -212,7 +210,9 @@
     </div>
     <div class="menuList assistive-menu" style="display: none;">
         <a class="closeBtn" href="javascript:;"></a>
-        <a class="menulist-item logout" href="javascript:;" onClick="$(this).parent().hide();showLogOutViews();"><em></em><span class="wd">退出</span></a><a class="menulist-item account" href="javascript:;" onClick="$(this).parent().hide();showServiceViews();"><em></em><span class="wd">账户</span></a> </div>
+        <a class="menulist-item logout" href="javascript:;" onClick="$(this).parent().hide();showLogOutViews();"><em></em><span class="wd">退出</span></a>
+        <a class="menulist-item account" href="javascript:;" onClick="$(this).parent().hide();showServiceViews();"><em></em><span class="wd">账户</span></a> 
+    </div>
     <!-- 浮标结束 -->
     <!-- 账户信息界面弹框 -->
     <div id="serviceBox" style="display: none;">
@@ -366,7 +366,7 @@ var isWhale = ua.indexOf('whale') != -1;
 if (isWeixin) {
     $("#payAliweb").hide();
     $("#payWeixin").hide();
-    $("#payButton").html('启动微信支付');
+    $(".payButton").html('启动微信支付');
 } else if (isUC && isAndroid) {
     $("#payAliweb").hide();
 }
@@ -383,8 +383,8 @@ function showPayViews(orderInfoObj, callback) {
     callbackFun = callback;
     var payViewObj = $("#payViews");
     var manageUid = "628";
-    payViewObj.find("#goodsname").html(orderInfoObj.subject);
-    payViewObj.find("#goodsprice").html("¥" + orderInfoObj.amount);
+    payViewObj.find(".goodsname").html(orderInfoObj.subject);
+    payViewObj.find(".goodsprice").html("¥" + orderInfoObj.amount);
 
     if ($("#payAliweb").length > 0) {
         $("#payAliweb").show().removeClass('selected');
@@ -401,17 +401,16 @@ function showPayViews(orderInfoObj, callback) {
     if (useAppPay == "1") {
         $("#payForm").trigger("submit");
     } else {
-        openDialog(document.getElementById("payViews"), "wsdk-payViews"); //支付
+        openDialog(document.getElementById("payViews"), "wsdk-payViews");
     }
 }
-
+showPayViews({},null)
 $("#userMsgTips").click(function() {
     $("#onlineService").trigger('click');
     $("#userMsgTips").hide();
 })
 
 function openOnlineService(obj, isShow) {
-
     if (isShow == 1) {
         //移除push标示
         if ($("#assistive-wrap>.assistive-touch").hasClass("act-on")) {
@@ -421,7 +420,6 @@ function openOnlineService(obj, isShow) {
         if ($(obj).find("i.tips-had-push").length > 0) {
             $(obj).find("i.tips-had-push").remove();
         }
-        checkUserPushData("66034315");
     }
 
     if ($("#chatFrame").length > 0) {
@@ -430,30 +428,9 @@ function openOnlineService(obj, isShow) {
         return;
     }
 
-    var chatParams = new Object();
-    chatParams.channelCode = '301';
-    chatParams.deviceId = '183.63.156.170';
-    chatParams.deviceName = 'Mozilla/5.0 (iPhone; CPU iPhone OS 10_3 like Mac OS X) AppleWebKit/602.1.50 (KHTML, like Gecko) CriOS/56.0.2924.75 Mobile/14E5239e Safari/602.1';
-    chatParams.deviceOs = 'Html5Webbrowser';
-    chatParams.platform = 'wap';
-    chatParams.productCode = '52391587712537540955268025903879';
-    chatParams.sessionId = 'itaq5uqa6346uvumdobc779va3';
-    chatParams.uid = '66034315';
-    chatParams.username = 'junyu05';
-    chatParams.userRoleBalance = '0';
-    chatParams.userRoleId = '0';
-    chatParams.userRoleName = 'H5游客用户';
-    chatParams.userRoleParty = '';
-    chatParams.userRoleServer = '无法获取区服';
-    if (saveRoleInfo != null) {
-        var thisRoleInfo = JSON.parse(saveRoleInfo);
-        chatParams.userRoleName = thisRoleInfo.hasOwnProperty('userRoleName') && thisRoleInfo.userRoleName != '' ? thisRoleInfo.userRoleName : 'H5游戏玩家';
-        chatParams.userRoleId = thisRoleInfo.hasOwnProperty('userRoleId') && thisRoleInfo.userRoleId != '' ? thisRoleInfo.userRoleId : '0';
-        chatParams.userRoleParty = thisRoleInfo.hasOwnProperty('partyName') && thisRoleInfo.partyName != '' ? thisRoleInfo.partyName : '';
-        chatParams.userRoleServer = thisRoleInfo.hasOwnProperty('serverName') && thisRoleInfo.serverName != '' ? thisRoleInfo.serverName : '无法获取区服';
-        chatParams.vipLevel = thisRoleInfo.hasOwnProperty('vipLevel') && thisRoleInfo.vipLevel != '' ? thisRoleInfo.vipLevel : '0';
-    }
-    var url = 'https://servicewap.whalesdk.net/im/wap?';
+    var chatParams = new Object();    //参数
+
+    var url = 'https://test.html';
     $.each(chatParams, function(k, v) {
         url += k + '=' + v + '&';
     })
@@ -476,61 +453,6 @@ function closeChat() {
     $("#chatFrame").hide();
 }
 
-function checkPlayerIsQueueOnService() {
-    var sendData = new Object();
-    sendData.productCode = '52391587712537540955268025903879';
-    sendData.channelCode = '301';
-    sendData.uid = '66034315';
-    var url = "/apiH5/checkPlayerIsQueue";
-    ajaxRequestData(url, sendData, function(rebackData) {
-        if (rebackData != null && rebackData != undefined && typeof(rebackData) == 'object' && rebackData.status == true) {
-            var isQueue = rebackData.data.data.isQueue;
-            if (isQueue == 1) {
-                openOnlineService(null, 0);
-                console.log('由于玩家处理客服队列,故自动打开客服');
-            }
-        }
-    });
-}
-
-checkPlayerIsQueueOnService();
-
-window.addEventListener("message", function(event) {
-    var callData = event.data;
-    try {
-        var callArr = JSON.parse(callData);
-    } catch (e) {
-        return;
-    }
-
-    if (callArr.action == undefined) {
-        return;
-    }
-    var params = callArr.params;
-    switch (callArr.action) {
-        case 'closeChatForm':
-            closeChat();
-            if (params == 1) {
-                setTimeout(function() {
-                    $("#chatFrame").remove();
-                }, 5000);
-            }
-            break;
-
-        case 'pushMessage':
-            var messageObject = new Object();
-            messageObject.closeTime = 10;
-            messageObject.avatarUrl = params.sendAvatarUrl;
-            var messageContent = params.message;
-            messageContent = messageContent.replace(/<\/?.+?>/g, "");
-            messageObject.retMsg = params.sendNickName + ":" + messageContent;
-            if ($("#chatFrame").css('display') == 'none') {
-                noteUserMsg(messageObject);
-            }
-            break;
-    }
-}, false);
-
 function closeIFrame() {
     $("#payFrameDialog").attr('src', '');
     layer.close(globalPageIndex);
@@ -545,10 +467,6 @@ function showServiceViews(callback) {
         className: 'ucenter-dialog',
         style: 'position:fixed; top:0; left:0; width: 60%; height: 100%; padding:0; border:none;'
     });
-}
-//调用客服信息界面
-function showServiceInfoViews() {
-    openDialog(document.getElementById("serviceInfoBox"), "wsdk-serviceinfo-dialog"); //客服信息
 }
 //调用登录界面
 function showLoginViews(callback) {
@@ -599,25 +517,26 @@ function showRegBox(regboxId) {
     layer.close(globalLayerIndex);
     openDialog(document.getElementById(regboxId), "wsdk-" + regboxId + "-dialog");
 }
-//调用用户协议界面
-var globalLayerSubIndex;
 
+//调用用户协议界面
 function showAgreementBox(regboxId) {
     var objd = document.getElementById(regboxId);
     var hengCss = 'border: none; -webkit-animation-duration: .5s; animation-duration: .5s;border-radius:4px;-webkit-border-radius:4px;';
     var html = objd.innerHTML;
     var classname = "wsdk-" + regboxId + "-dialog";
-    globalLayerSubIndex = layer.open({
+    var globalLayerSubIndex = layer.open({
         type: 1,
         content: html,
         style: hengCss,
         shadeClose: false,
         className: classname
     });
+
+    $('.'+classname+" .sub-box-close").click(function(){
+    	layer.close(globalLayerSubIndex);
+    })
 }
-$(document).on("click", ".sub-box-close", function() {
-    layer.close(globalLayerSubIndex);
-})
+
 //调用显示、隐藏浮标菜单
 function showToggleModalMenu(menuStatus) {
     if (menuStatus == "OPEN") {
@@ -628,6 +547,32 @@ function showToggleModalMenu(menuStatus) {
         $("#assistive-wrap").css("display", "block");
     }
 }
+
+//用户提示信息框
+function noteUserMsg(tipsObj) {
+    var replyContent = "您收到一条信息";
+    if (tipsObj.retMsg && tipsObj.retMsg != "") {
+        var replyContent = tipsObj.retMsg;
+    }
+    var avatarUrl = "";
+    if (tipsObj.avatarUrl && tipsObj.avatarUrl != "") {
+        var avatarUrl = tipsObj.avatarUrl;
+    }
+    var leftTime = 10;
+    if (tipsObj.closeTime) {
+        var leftTime = tipsObj.closeTime;
+    }
+
+    $("#msg-con").html(replyContent);
+    if (avatarUrl != "") {
+        $("#msg-avatar").prop("scr", avatarUrl);
+    }
+    setTimeout(function() {
+        $("#userMsgTips").css("top", "-70px").hide();
+    }, leftTime * 1000);
+    $("#userMsgTips").css("top", "0px").show();
+}
+
 $(document).on("click", "#pay-type-items a", function(e) {
     $(this).addClass("selected").siblings("a").removeClass("selected");
     $(this).find("input[name='paytype']").prop("checked", "checked");
@@ -898,90 +843,47 @@ $(document).on("submit", "#editInfoForm", function(e) {
     return false;
 });
 
-//用户提示信息框
-function noteUserMsg(tipsObj) {
-    var replyContent = "您收到一条信息";
-    if (tipsObj.retMsg && tipsObj.retMsg != "") {
-        var replyContent = tipsObj.retMsg;
-    }
-    var avatarUrl = "";
-    if (tipsObj.avatarUrl && tipsObj.avatarUrl != "") {
-        var avatarUrl = tipsObj.avatarUrl;
-    }
-    var leftTime = 10;
-    if (tipsObj.closeTime && tipsObj.closeTime != "" && tipsObj.closeTime != 0) {
-        var leftTime = tipsObj.closeTime;
+//监听cp事件
+window.addEventListener("message", function(event) {
+    var callData = event.data;
+    try {
+        var callArr = JSON.parse(callData);
+    } catch (e) {
+        return;
     }
 
-    $("#msg-con").html(replyContent);
-    if (avatarUrl != "") {
-        $("#msg-avatar").prop("scr", avatarUrl);
+    if (callArr.action == undefined) {
+        return;
     }
-    setTimeout(function() {
-        $("#userMsgTips").css("top", "-70px").hide();
-    }, leftTime * 1000);
-    $("#userMsgTips").css("top", "0px").show();
-}
-//手机号码找回密码
-$(document).on("submit", "#findPwdForm", function(e) {
-    var urlData = $(this).serialize();
-    var url = $(this).attr("action");
-    urlData += "&productCode=52391587712537540955268025903879&channelCode=001";
-    var phone = $(this).find("input[name='phone']").val();
-    var checkUPhone = checkPhone(phone);
-    if (checkUPhone.status == false) {
-        layer.open({
-            content: checkUPhone.msg,
-            btn: "确定"
-        });
-        return false;
-    }
-    var pwd = $(this).find("input[name='password']").val();
-    if (pwd.length < 6 || pwd.length > 16) {
-        layer.open({
-            content: "密码格式错误",
-            btn: "确定"
-        });
-        return false;
-    }
-    ajaxRequestData(url, urlData, function(rebackData) {
-        setLog(JSON.stringify(rebackData), 3);
-        if (rebackData.status == false && rebackData.hasOwnProperty("message") && rebackData.message != '') {
-            layer.open({
-                content: rebackData.message,
-                btn: "确定"
-            });
-        }
-        if (rebackData.status == true) {
-            layer.open({
-                content: "密码重置成功，请返回重新登录",
-                btn: "确定",
-                yes: function() {
-                    layer.closeAll();
-                }
-            });
-        }
+    var params = callArr.params;
+    switch (callArr.action) {
+        case 'closeChatForm':
+            closeChat();
+            if (params == 1) {
+                setTimeout(function() {
+                    $("#chatFrame").remove();
+                }, 5000);
+            }
+            break;
 
-    });
-    return false;
-});
+        case 'pushMessage':
+            var messageObject = new Object();
+            messageObject.closeTime = 10;
+            messageObject.avatarUrl = params.sendAvatarUrl;
+            var messageContent = params.message;
+            messageContent = messageContent.replace(/<\/?.+?>/g, "");
+            messageObject.retMsg = params.sendNickName + ":" + messageContent;
+            if ($("#chatFrame").css('display') == 'none') {
+                noteUserMsg(messageObject);
+            }
+            break;
+    }
+}, false);
 
 
 $(".closeBtn").click(function() {
     $(this).parent().hide();
 });
-
-function checkUserPushData(uid) {
-    var url = "/apiH5/reckPushData";
-    var urlData = {
-        uid: uid,
-        channelCode: "001",
-        productCode: "52391587712537540955268025903879"
-    };
-    ajaxRequestData(url, urlData, function(rebackData) {
-        setLog(JSON.stringify(rebackData), 3);
-    });
-}
 
 //广告相关事件 登录事件
 
