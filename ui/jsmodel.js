@@ -603,6 +603,9 @@ window.addEventListener('message',function(e){
 			saveRoleInfo = messageObject.params; 
 			triggerAd_updateRole(saveRoleInfo);
 			break;
+        case 'Event_OpenService':
+            openOnlineServiceCallback(messageObject.params);
+            break;
 			
 	}
 },false);
@@ -679,4 +682,17 @@ function checkPhone(phone){
 	}
 	rebackResult.status=true;
 	return rebackResult;
+}
+
+//错误日志 level 1为错误 0为警告
+function setLog(str,level){
+    if(level == 1){
+        console.log('%UI层致命错误:'+str,'color:red');
+    }else if(level == 0){
+        console.log('%UI层警告错误:'+str,'color:org');
+    }else if(level==3){
+        console.log('%UI层运行日志:'+str,'color:gray');
+    }else{
+        console.log('%UI层运行日志:'+str,'color:gray');
+    }
 }
