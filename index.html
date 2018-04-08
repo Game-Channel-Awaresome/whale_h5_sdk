@@ -1,318 +1,354 @@
 <!DOCTYPE html>
 <html lang="en-US">
+    <head>
+        <meta charset="utf-8">
+        <title>测试h5-sdk</title>
+        <meta name="description" content="">
+        <meta id="viewport" name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no,minimal-ui">
+        <meta id="safari-app-capable" name="apple-mobile-web-app-capable" content="yes"/>
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+        <meta name="format-detection" content="telephone=no, email=no"/>
+        <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
+        <meta http-equiv="Pragma" content="no-cache"/>
+        <meta http-equiv="Expires" content="0"/>
+        <meta name="full-screen" content="yes">
+        <meta name="x5-fullscreen" content="true">
+        <meta name="x5-page-mode" content="app">
+        <meta name="360-fullscreen" content="true">
+        <meta name="browsermode" content="application">
+        <link rel="dns-prefetch" href="//">
+        <link rel="stylesheet" type="text/css" href="/resource/css/base.css"/>
+        <script src="/resource/js/zepto.min.js"></script>
+        <script src="/resource/plugin/layerMobile/layer.js"></script>
+        <script type="text/javascript" src="/ui/jsmodel.js"></script>
+        <style type="text/css">
+            .layui-m-layer {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+            }
 
-<head>
-    <meta charset="utf-8">
-    <title>测试h5-sdk</title>
-    <meta name="description" content="">    
-    <meta id="viewport" name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no,minimal-ui">
-    <meta id="safari-app-capable" name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-    <meta name="format-detection" content="telephone=no, email=no" />
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
-    <meta http-equiv="Pragma" content="no-cache" />
-    <meta http-equiv="Expires" content="0" />
-    <meta name="full-screen" content="yes">
-    <meta name="x5-fullscreen" content="true">
-    <meta name="x5-page-mode" content="app">
-    <meta name="360-fullscreen" content="true">
-    <meta name="browsermode" content="application">
-    <link rel="dns-prefetch" href="//">
-
-    <link rel="stylesheet" type="text/css" href="/resource/css/base.css" />
-    <script src="/resource/js/zepto.min.js"></script>
-    <script src="/resource/plugin/layerMobile/layer.js"></script>
-    <style type="text/css">
-    .layui-m-layer {
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-    }
-    
-    .layui-m-layermain,
-    .layui-m-layershade {
-        position: absolute;
-    }
-    </style>
-</head>
-
-<body>
-    <iframe id="gameFrame" class="gameFrame" height="100%" width="100%" frameborder="no" scrolling="no" allowtransparency="yes" src="./channel.html"></iframe>
-    <!-- 消息通知框 -->
-    <div id='userMsgTips' class='userMsgTips' style="display:none">
-        <div class='msgbox'>
-            <img id="msg-avatar" src="/resource/images/defaultHead.png" />
-            <div id="msg-con"></div>
-        </div>
-        <a href="javascript:;" class="closeLink" onclick='event.stopPropagation();$("#userMsgTips").css("top","-70px").hide()'></a>
-    </div>    
-    <!-- 支付页面 -->
-    <div id="payViews" style="display: none;">
-        <a href="javascript:void(0)" class="box-close"><img class="closeImage" src="/resource/images/controls_close.png" alt="" /></a>
-        <form id="payForm" action="/apiH5/ajaxPayDo" data-islogin="1" data-uid="66034315">
-            <div class="payViews">
-                <div class="payTitle">支付中心</div>
-                <div style="height: 1%;"></div>
-                <div class="pay-goods-name">
-                    <span class="goodsprice"></span>
-                    <span>商品：</span>
-                    <span class="goodsname"></span>
-                </div>
-                <h4 class="pay-type-title">选择支付方式</h4>
-                <div class="pay-type-box">
-                    <div class="pay-type-items" id="pay-type-items">
-                        <a id="payWeixin" href="javascript:;" class="selected">
-                            <em></em>
-                            <img src="/resource/images/pay_type_wechat.png" alt="" />
-                            <span class="pay-type-name">微信支付</span>
-                            <input type="radio" name="paytype" class="paytype-radio" value="10" checked="checked" />
-                        </a>
-                        <a id="payAliweb" href="javascript:;">
-                            <em></em>
-                            <img src="/resource/images/pay_type_alipay.png" alt="" />
-                            <span class="pay-type-name">支付宝网页</span>
-                            <input type="radio" name="paytype" class="paytype-radio" value="2" />
-                        </a>
-                    </div>
-                </div>
-                <div class="pay-type-submit tc">
-                    <button type="submit" class="form-item-submit payButton">立即支付</button>
-                </div>
+            .layui-m-layermain, .layui-m-layershade {
+                position: absolute;
+            }
+        </style>
+    </head>
+    <body>
+        <iframe id="gameFrame" class="gameFrame" height="100%" width="100%" frameborder="no" scrolling="no" allowtransparency="yes" src="./channel.html"></iframe>
+        <!-- 消息通知框 -->
+        <div id='userMsgTips' class='userMsgTips' style="display:none">
+            <div class='msgbox'>
+                <img id="msg-avatar" src="/resource/images/defaultHead.png"/>
+                <div id="msg-con"></div>
             </div>
-        </form>
-        <div id="payFrame" style="display: none;">
-            <a href="javascript:void(0)" class="page-close"><img class="closeImage" src="/resource/images/controls_close.png" alt="" /></a>
-            <iframe class="gameFrame" id="payFrameDialog" height="480px" width="100%" frameborder="no" scrolling="no" allowtransparency="yes" src=""></iframe>
+            <a href="javascript:;" class="closeLink" onclick='event.stopPropagation();$("#userMsgTips").css("top","-70px").hide()'></a>
         </div>
-    </div>
-    <!-- 登录界面 -->
-    <div id="loginBox" style="display: none;">
-        <div class="login-box-ui">
-            <a href="javascript:void(0)" class="box-close"><img class="closeImage" src="/resource/images/controls_close.png" alt="" /></a>
-            <form id="loginForm" action="/apiH5/ajaxLoginDo">
-                <div style="height: 6%;clear: both;"></div>
-                <div class="login-top-logo">
-                    <span>用户登录</span>
-                </div>
-                <div style="height: 3%;clear: both;"></div>
-                <div class="login-contain-form">
-                    <div class="login-form-item">
-                        <em class="interface-icon-uname "></em>
-                        <input type="text" placeholder="请输入您的账号" autocomplete="off" id="ssssss" class="form-item-input" name="username" />
+        <!-- 支付页面 -->
+        <div id="payViews" style="display: none;">
+            <a href="javascript:void(0)" class="box-close">
+                <img class="closeImage" src="/resource/images/controls_close.png" alt=""/>
+            </a>
+            <form id="payForm" action="/apiH5/ajaxPayDo" data-islogin="1" data-uid="66034315">
+                <div class="payViews">
+                    <div class="payTitle">支付中心</div>
+                    <div style="height: 1%;"></div>
+                    <div class="pay-goods-name">
+                        <span class="goodsprice"></span>
+                        <span>商品：</span>
+                        <span class="goodsname"></span>
                     </div>
-                    <div class="form-line"></div>
-                    <div class="login-form-item">
-                        <em class="interface-icon-pwd "></em>
-                        <input type="password" placeholder="请输入您的密码" class="form-item-input" name="password" />
+                    <h4 class="pay-type-title">选择支付方式</h4>
+                    <div class="pay-type-box">
+                        <div class="pay-type-items" id="pay-type-items">
+                            <a id="payWeixin" href="javascript:;" class="selected">
+                                <em></em>
+                                <img src="/resource/images/pay_type_wechat.png" alt=""/>
+                                <span class="pay-type-name">微信支付</span>
+                                <input type="radio" name="paytype" class="paytype-radio" value="10" checked="checked"/>
+                            </a>
+                            <a id="payAliweb" href="javascript:;">
+                                <em></em>
+                                <img src="/resource/images/pay_type_alipay.png" alt=""/>
+                                <span class="pay-type-name">支付宝网页</span>
+                                <input type="radio" name="paytype" class="paytype-radio" value="2"/>
+                            </a>
+                        </div>
                     </div>
-                    <div class="form-line"></div>
-                    <div class="login-form-item tr">
-                        <a href="javascript:;" class="forgetpwd" onClick="showRegBox('findpwdBox');">忘记密码？</a>
-                    </div>
-                    <div class="login-form-item tc">
-                        <button type="submit" class="form-item-submit">立即登录</button>
-                    </div>
-                </div>
-                <div class="login-form-item">
-                    <ul class="guest-whale-op">
-                        <li class="oneblock"><a href="javascript:;" onClick="showRegBox('regBoxAcount');">没有账号？立即注册</a></li>
-                    </ul>
-                </div>
-            </form>
-        </div>
-    </div>
-    <!-- 账号注册页面 -->
-    <div id="regBoxAcount" style="display: none;">
-        <div class="login-box-ui">
-            <a href="javascript:void(0)" class="box-close"><img class="closeImage" src="/resource/images/controls_close.png" alt="" /></a>
-            <form id="regAcountForm" action="/apiH5/regUserDo">
-                <div style="height: 6%;clear: both;"></div>
-                <div class="login-top-logo">
-                    <span>账号注册</span>
-                </div>
-                <div style="height: 3%;clear: both;"></div>
-                <div class="login-contain-form">
-                    <div class="login-form-item">
-                        <em class="interface-icon-uname "></em>
-                        <input type="text" placeholder="4-12字母或数字组成" autocomplete="off" class="form-item-input" name="username" />
-                    </div>
-                    <div class="form-line"></div>
-                    <div class="login-form-item">
-                        <em class="interface-icon-pwd "></em>
-                        <input type="password" placeholder="6-16位字符，区分大小写" class="form-item-input" name="password" />
-                    </div>
-                    <div class="form-line"></div>
-                    <div class="login-form-item tr">
-                        <input type="checkbox" value="1" name="agreement" checked="checked" style="vertical-align: middle;" />
-                        <a href="javascript:;" class="forgetpwd" onClick="showAgreementBox('agreenMentBox')">同意用户注册协议</a>
-                    </div>
-                    <div class="login-form-item tc">
-                        <button type="submit" class="form-item-submit">立即注册</button>
+                    <div class="pay-type-submit tc">
+                        <button type="submit" class="form-item-submit payButton">立即支付</button>
                     </div>
                 </div>
             </form>
+            <div id="payFrame" style="display: none;">
+                <a href="javascript:void(0)" class="page-close">
+                    <img class="closeImage" src="/resource/images/controls_close.png" alt=""/>
+                </a>
+                <iframe class="gameFrame" id="payFrameDialog" height="480px" width="100%" frameborder="no" scrolling="no" allowtransparency="yes" src=""></iframe>
+            </div>
         </div>
-    </div>
-    <!-- 注册协议页面 -->
-    <div id="agreenMentBox" style="display: none;">
-        <div class="login-box-ui" style="padding: 0px 1em;">
-            <a href="javascript:void(0)" class="sub-box-close" style="z-index: 999;"><img class="closeImage" src="/resource/images/controls_close.png" alt="" /></a>
-            <div class="login-contain-form">
-                <div style="height: 13px;clear: both;"></div>
-                <div class="login-top-logo">
-                    <span>用户注册协议</span>
-                </div>
-                <div class="login-form-item agree-cont">
+        <!-- 登录界面 -->
+        <div id="loginBox" style="display: none;">
+            <div class="login-box-ui">
+                <a href="javascript:void(0)" class="box-close">
+                    <img class="closeImage" src="/resource/images/controls_close.png" alt=""/>
+                </a>
+                <form id="loginForm" action="/apiH5/ajaxLoginDo">
+                    <div style="height: 6%;clear: both;"></div>
+                    <div class="login-top-logo">
+                        <span>用户登录</span>
+                    </div>
+                    <div style="height: 3%;clear: both;"></div>
+                    <div class="login-contain-form">
+                        <div class="login-form-item">
+                            <em class="interface-icon-uname "></em>
+                            <input type="text" placeholder="请输入您的账号" autocomplete="off" id="ssssss" class="form-item-input" name="username"/>
+                        </div>
+                        <div class="form-line"></div>
+                        <div class="login-form-item">
+                            <em class="interface-icon-pwd "></em>
+                            <input type="password" placeholder="请输入您的密码" class="form-item-input" name="password"/>
+                        </div>
+                        <div class="form-line"></div>
+                        <div class="login-form-item tr">
+                            <a href="javascript:;" class="forgetpwd" onClick="showRegBox('findpwdBox');">忘记密码？</a>
+                        </div>
+                        <div class="login-form-item tc">
+                            <button type="submit" class="form-item-submit">立即登录</button>
+                        </div>
+                    </div>
+                    <div class="login-form-item">
+                        <ul class="guest-whale-op">
+                            <li class="oneblock">
+                                <a href="javascript:;" onClick="showRegBox('regBoxAcount');">没有账号？立即注册</a>
+                            </li>
+                        </ul>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!-- 账号注册页面 -->
+        <div id="regBoxAcount" style="display: none;">
+            <div class="login-box-ui">
+                <a href="javascript:void(0)" class="box-close">
+                    <img class="closeImage" src="/resource/images/controls_close.png" alt=""/>
+                </a>
+                <form id="regAcountForm" action="/apiH5/regUserDo">
+                    <div style="height: 6%;clear: both;"></div>
+                    <div class="login-top-logo">
+                        <span>账号注册</span>
+                    </div>
+                    <div style="height: 3%;clear: both;"></div>
+                    <div class="login-contain-form">
+                        <div class="login-form-item">
+                            <em class="interface-icon-uname "></em>
+                            <input type="text" placeholder="4-12字母或数字组成" autocomplete="off" class="form-item-input" name="username"/>
+                        </div>
+                        <div class="form-line"></div>
+                        <div class="login-form-item">
+                            <em class="interface-icon-pwd "></em>
+                            <input type="password" placeholder="6-16位字符，区分大小写" class="form-item-input" name="password"/>
+                        </div>
+                        <div class="form-line"></div>
+                        <div class="login-form-item tr">
+                            <input type="checkbox" value="1" name="agreement" checked="checked" style="vertical-align: middle;"/>
+                            <a href="javascript:;" class="forgetpwd" onClick="showAgreementBox('agreenMentBox')">同意用户注册协议</a>
+                        </div>
+                        <div class="login-form-item tc">
+                            <button type="submit" class="form-item-submit">立即注册</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!-- 注册协议页面 -->
+        <div id="agreenMentBox" style="display: none;">
+            <div class="login-box-ui" style="padding: 0px 1em;">
+                <a href="javascript:void(0)" class="sub-box-close" style="z-index: 999;">
+                    <img class="closeImage" src="/resource/images/controls_close.png" alt=""/>
+                </a>
+                <div class="login-contain-form">
+                    <div style="height: 13px;clear: both;"></div>
+                    <div class="login-top-logo">
+                        <span>用户注册协议</span>
+                    </div>
+                    <div class="login-form-item agree-cont"></div>
                 </div>
             </div>
         </div>
-    </div>
-    <!-- 用户找回密码弹框 -->
-    <div id="findpwdBox" style="display: none;">
-        <div class="login-box-ui">
-            <a href="javascript:void(0)" class="box-close"><img class="closeImage" src="/resource/images/controls_close.png" alt="" /></a>
-            <div style="height: 6%;clear: both;"></div>
-            <div class="login-contain-form">
-                <div class="login-form-item">
-                    <div style="height: 1%;clear: both;">&nbsp;</div>
-                    <h4 class="warning-tips-tit"><img src="/resource/images/help.png" alt="" /></h4>
-                    <div style="height: 10px;clear: both;">&nbsp;</div>
-                    <p class="warning-tips">账号注册用户找回密码请联系<strong style="font-weight: 600;">游戏客服</strong>。</p>
+        <!-- 用户找回密码弹框 -->
+        <div id="findpwdBox" style="display: none;">
+            <div class="login-box-ui">
+                <a href="javascript:void(0)" class="box-close">
+                    <img class="closeImage" src="/resource/images/controls_close.png" alt=""/>
+                </a>
+                <div style="height: 6%;clear: both;"></div>
+                <div class="login-contain-form">
+                    <div class="login-form-item">
+                        <div style="height: 1%;clear: both;">&nbsp;</div>
+                        <h4 class="warning-tips-tit">
+                            <img src="/resource/images/help.png" alt=""/>
+                        </h4>
+                        <div style="height: 10px;clear: both;">&nbsp;</div>
+                        <p class="warning-tips">
+                            账号注册用户找回密码请联系<strong style="font-weight: 600;">游戏客服</strong>
+                            。
+                        </p>
+                    </div>
+                    <div style="height: 3%;clear: both;">&nbsp;</div>
+                </div>
+            </div>
+        </div>
+        <!-- 微信支付操作选择 -->
+        <div id="wxpay-con" style="display: none;">
+            <div class="wxpay-box">
+                <div class="wxpay-top">
+                    <span>微信支付操作提示</span>
+                </div>
+                <div class="wxpay-choose">
+                    <a class="pay-now" href="javascript:;" onClick="layer.closeAll();payAfterLoginViews(null);">点击打开微信支付</a>
+                </div>
+            </div>
+        </div>
+        <!-- 浮标开始 -->
+        <div class="assistive-wrap" id="assistive-wrap">
+            <div class="assistive-touch ">
+                <span></span>
+            </div>
+        </div>
+        <div class="menuList assistive-menu" style="display: none;">
+            <a class="closeBtn" href="javascript:;"></a>
+            <a class="menulist-item logout" href="javascript:;" onClick="$(this).parent().hide();showLogOutViews();">
+                <em></em>
+                <span class="wd">退出</span>
+            </a>
+            <a class="menulist-item account" href="javascript:;" onClick="$(this).parent().hide();showServiceViews();">
+                <em></em>
+                <span class="wd">账户</span>
+            </a>
+        </div>
+        <!-- 浮标结束 -->
+        <!-- 账户信息界面弹框 -->
+        <div id="serviceBox" style="display: none;">
+            <div class="login-box-ui">
+                <div style="height: 8%;clear: both;"></div>
+                <div class="ucenter-avatar-box">
+                    <div class="avatar-l navar-box">
+                        <em></em>
+                    </div>
+                    <div class="avatar-r">
+                        <h4 class="warning-tips-tit" style="color: #757575;">当前账号</h4>
+                        <h4 class="warning-tips-tit" style="margin-top: 2px;color: #585858;">junyu05</h4>
+                    </div>
+                </div>
+                <div class="ucenter-item">
+                    <a href="javascript:;" class="clickButton" onClick="showRegBox('editInfoBox');">
+                        <em class="pwd-em"></em>
+                        修改密码
+                    </a>
+                    <a href="javascript:;" class="clickButton" id="onlineService" onClick="openOnlineService(this,1);">
+                        <em class="service-em"></em>
+                        在线客服
+                    </a>
+                    <a href="javascript:;" class="clickButton" onClick="showToggleModalMenu('CLOSE');">
+                        <em class="assistive-em"></em>
+                        隐藏浮标
+                    </a>
                 </div>
                 <div style="height: 3%;clear: both;">&nbsp;</div>
             </div>
         </div>
-    </div>
-    <!-- 微信支付操作选择 -->
-    <div id="wxpay-con" style="display: none;">
-        <div class="wxpay-box">
-            <div class="wxpay-top">
-                <span>微信支付操作提示</span>
-            </div>
-            <div class="wxpay-choose">
-                <a class="pay-now" href="javascript:;" onClick="layer.closeAll();payAfterLoginViews(null);">点击打开微信支付</a>
-            </div>
-        </div>
-    </div>
-    <!-- 浮标开始 -->
-    <div class="assistive-wrap" id="assistive-wrap">
-        <div class="assistive-touch ">
-            <span></span>
-        </div>
-    </div>
-    <div class="menuList assistive-menu" style="display: none;">
-        <a class="closeBtn" href="javascript:;"></a>
-        <a class="menulist-item logout" href="javascript:;" onClick="$(this).parent().hide();showLogOutViews();"><em></em><span class="wd">退出</span></a>
-        <a class="menulist-item account" href="javascript:;" onClick="$(this).parent().hide();showServiceViews();"><em></em><span class="wd">账户</span></a> 
-    </div>
-    <!-- 浮标结束 -->
-    <!-- 账户信息界面弹框 -->
-    <div id="serviceBox" style="display: none;">
-        <div class="login-box-ui">
-            <div style="height: 8%;clear: both;"></div>
-            <div class="ucenter-avatar-box">
-                <div class="avatar-l navar-box"><em></em></div>
-                <div class="avatar-r">
-                    <h4 class="warning-tips-tit" style="color: #757575;">当前账号</h4>
-                    <h4 class="warning-tips-tit" style="margin-top: 2px;color: #585858;">junyu05</h4>
-                </div>
-            </div>
-            <div class="ucenter-item">
-                <a href="javascript:;" class="clickButton" onClick="showRegBox('editInfoBox');"><em class="pwd-em"></em>修改密码</a>
-                <a href="javascript:;" class="clickButton" id="onlineService" onClick="openOnlineService(this,1);"><em class="service-em"></em>在线客服</a>
-                <a href="javascript:;" class="clickButton" onClick="showToggleModalMenu('CLOSE');"><em class="assistive-em"></em>隐藏浮标</a>
-            </div>
-            <div style="height: 3%;clear: both;">&nbsp;</div>
-        </div>
-    </div>
-    <!-- 客服信息界面弹框 -->
-    <div id="serviceInfoBox" style="display: none;">
-        <div class="login-box-ui">
-            <a href="javascript:void(0)" class="box-close"><img class="closeImage" src="/resource/images/controls_close.png" alt="" /></a>
-            <div style="height: 6%;clear: both;"></div>
-            <div class="login-contain-form">
-                <div class="login-form-item">
-                    <div style="height: 1%;clear: both;">&nbsp;</div>
-                    <h4 class="warning-tips-tit"><img src="/resource/images/help.png" alt="" /></h4>
-                    <div style="height: 10px;clear: both;">&nbsp;</div>
-                    <p class="warning-tips"></p>
-                </div>
-                <div style="height: 3%;clear: both;">&nbsp;</div>
-            </div>
-        </div>
-    </div>
-    <!--修改密码界面-->
-    <div id="editInfoBox" style="display: none;">
-        <div class="login-box-ui">
-            <a href="javascript:void(0)" class="box-close"><img class="closeImage" src="/resource/images/controls_close.png" alt="" /></a>
-            <form id="editInfoForm" action="/apiH5/ajaxModifyInfoDo">
+        <!-- 客服信息界面弹框 -->
+        <div id="serviceInfoBox" style="display: none;">
+            <div class="login-box-ui">
+                <a href="javascript:void(0)" class="box-close">
+                    <img class="closeImage" src="/resource/images/controls_close.png" alt=""/>
+                </a>
                 <div style="height: 6%;clear: both;"></div>
-                <div class="login-top-logo">
-                    <span>密码修改</span>
-                </div>
-                <div style="height: 3%;clear: both;"></div>
                 <div class="login-contain-form">
                     <div class="login-form-item">
-                        <em class="interface-icon-uname "></em>
-                        <input type="password" placeholder="请输入您的旧密码" autocomplete="off" class="form-item-input" name="oldpassword" />
+                        <div style="height: 1%;clear: both;">&nbsp;</div>
+                        <h4 class="warning-tips-tit">
+                            <img src="/resource/images/help.png" alt=""/>
+                        </h4>
+                        <div style="height: 10px;clear: both;">&nbsp;</div>
+                        <p class="warning-tips"></p>
                     </div>
-                    <div class="form-line"></div>
-                    <div class="login-form-item">
-                        <em class="interface-icon-pwd "></em>
-                        <input type="password" placeholder="请输入您的新密码" class="form-item-input" name="newpassword" />
-                    </div>
-                    <div class="form-line"></div>
-                    <div class="login-form-item">
-                        <em class="interface-icon-pwd "></em>
-                        <input type="password" placeholder="请确认您的新密码" class="form-item-input" name="rePassword" />
-                    </div>
-                    <div class="form-line"></div>
-                    <div class="login-form-item tc">
-                        <button type="submit" class="form-item-submit">立即修改</button>
-                    </div>
+                    <div style="height: 3%;clear: both;">&nbsp;</div>
                 </div>
-            </form>
+            </div>
         </div>
-    </div>
-    <script type="text/javascript" src="/ui/jsmodel.js"></script>
-</body>
-
+        <!--修改密码界面-->
+        <div id="editInfoBox" style="display: none;">
+            <div class="login-box-ui">
+                <a href="javascript:void(0)" class="box-close">
+                    <img class="closeImage" src="/resource/images/controls_close.png" alt=""/>
+                </a>
+                <form id="editInfoForm" action="/apiH5/ajaxModifyInfoDo">
+                    <div style="height: 6%;clear: both;"></div>
+                    <div class="login-top-logo">
+                        <span>密码修改</span>
+                    </div>
+                    <div style="height: 3%;clear: both;"></div>
+                    <div class="login-contain-form">
+                        <div class="login-form-item">
+                            <em class="interface-icon-uname "></em>
+                            <input type="password" placeholder="请输入您的旧密码" autocomplete="off" class="form-item-input" name="oldpassword"/>
+                        </div>
+                        <div class="form-line"></div>
+                        <div class="login-form-item">
+                            <em class="interface-icon-pwd "></em>
+                            <input type="password" placeholder="请输入您的新密码" class="form-item-input" name="newpassword"/>
+                        </div>
+                        <div class="form-line"></div>
+                        <div class="login-form-item">
+                            <em class="interface-icon-pwd "></em>
+                            <input type="password" placeholder="请确认您的新密码" class="form-item-input" name="rePassword"/>
+                        </div>
+                        <div class="form-line"></div>
+                        <div class="login-form-item tc">
+                            <button type="submit" class="form-item-submit">立即修改</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </body>
 </html>
 <script>
-//浮标悬浮球
-var assistiveLeft, assistiveRight, timerid;
+    //浮标悬浮球
+    var assistiveLeft, assistiveRight, timerid;
 
-function stickEdge(el) {
-    var left = parseInt($(el).css("left")) || 0,
-        width = parseInt(el.offsetWidth) || 0,
-        windowWith = (document.documentElement || document.body).offsetWidth;
-    if (left > (windowWith - width) / 2) {
-        left = windowWith - width - 2;
-    } else {
-        left = 1;
-    }
-    var ltop = parseInt($(el).css("top")) || 0,
-        windowHeight = $(window).height();
-    //var ptop=windowHeight*0.2 || 0;
-    var ptop = 0;
-    if (ltop + ptop <= 0) {
-        el.style.top = (0 - ptop) + "px";
-    } else if (ltop + ptop + 40 >= windowHeight) {
-        el.style.top = (windowHeight - ptop - 40) + "px";
-    }
+    function stickEdge(el) {
+        var left = parseInt($(el).css("left")) || 0
+          , width = parseInt(el.offsetWidth) || 0
+          , windowWith = (document.documentElement || document.body).offsetWidth;
+        if (left > (windowWith - width) / 2) {
+            left = windowWith - width - 2;
+        } else {
+            left = 1;
+        }
+        var ltop = parseInt($(el).css("top")) || 0
+          , windowHeight = $(window).height();
+        //var ptop=windowHeight*0.2 || 0;
+        var ptop = 0;
+        if (ltop + ptop <= 0) {
+            el.style.top = (0 - ptop) + "px";
+        } else if (ltop + ptop + 40 >= windowHeight) {
+            el.style.top = (windowHeight - ptop - 40) + "px";
+        }
 
-    el.style.transition = 'all .2s';
-    el.style['-webkit-transition'] = 'all .2s';
-    el.style.left = left + 'px';
-    timerid = setTimeout(function() {
-        el.style.transition = 'all .5s';
-        el.style['-webkit-transition'] = 'all .5s';
-        el.style.opacity = '.3';
-    }, 2000);
-};
-mTouch('.assistive-wrap').on('swipestart', function() {
+        el.style.transition = 'all .2s';
+        el.style['-webkit-transition'] = 'all .2s';
+        el.style.left = left + 'px';
+        timerid = setTimeout(function() {
+            el.style.transition = 'all .5s';
+            el.style['-webkit-transition'] = 'all .5s';
+            el.style.opacity = '.3';
+        }, 2000);
+    }
+    mTouch('.assistive-wrap').on('swipestart', function() {
         clearTimeout(timerid);
 
         this.style.transition = 'none';
@@ -321,13 +357,11 @@ mTouch('.assistive-wrap').on('swipestart', function() {
         assistiveLeft = parseInt($(this).css("left")) || 0;
         assistiveTop = parseInt($(this).css("top")) || 0;
         return false;
-    })
-    .on('swiping', function(e) {
+    }).on('swiping', function(e) {
         this.style.left = assistiveLeft + e.mTouchEvent.moveX + 'px';
         this.style.top = assistiveTop + e.mTouchEvent.moveY + 'px';
         $(".menuList.assistive-menu").hide();
-    })
-    .on('swipeend', function() {
+    }).on('swipeend', function() {
         stickEdge(this);
         var assisL = parseInt($(this).css("left")) || 0;
         var assisT = parseInt($(this).css("top")) || 0;
@@ -349,265 +383,295 @@ mTouch('.assistive-wrap').on('swipestart', function() {
         $(".menuList.assistive-menu").toggle();
     });
 
-//判断是否为微信浏览器
-var ua = navigator.userAgent.toLowerCase();
-var isWeixin = ua.indexOf('micromessenger') != -1;
-var isiPhone = ua.indexOf("iphone") != -1;
-var isiPad = ua.indexOf("ipad") != -1;
-var isAndroid = ua.indexOf("android") != -1;
-var isUC = ua.indexOf('ucbrowser') != -1;
-var isWhale = ua.indexOf('whale') != -1;
-if (isWeixin) {
-    $("#payAliweb").hide();
-    $("#payWeixin").hide();
-    $(".payButton").html('启动微信支付');
-} else if (isUC && isAndroid) {
-    $("#payAliweb").hide();
-}
-
-
-//cp支付参数
-var orderInfo;
-
-//回调专用变量
-var callbackFun = null;
-
-//调用支付界面
-function showPayViews(orderInfoObj, callback) {
-
-    orderInfo = orderInfoObj;
-    callbackFun = callback;
-    var payViewObj = $("#payViews");
-    var manageUid = "628";
-    payViewObj.find(".goodsname").html(orderInfoObj.subject);
-    payViewObj.find(".goodsprice").html("¥" + orderInfoObj.amount);
-
-    if ($("#payAliweb").length > 0) {
-        $("#payAliweb").show().removeClass('selected');
-    }
-    if ($("#payWeixin").length > 0) {
-        $("#payWeixin").show().addClass("selected");
+    //判断是否为微信浏览器
+    var ua = navigator.userAgent.toLowerCase();
+    var isWeixin = ua.indexOf('micromessenger') != -1;
+    var isiPhone = ua.indexOf("iphone") != -1;
+    var isiPad = ua.indexOf("ipad") != -1;
+    var isAndroid = ua.indexOf("android") != -1;
+    var isUC = ua.indexOf('ucbrowser') != -1;
+    var isWhale = ua.indexOf('whale') != -1;
+    if (isWeixin) {
+        $("#payAliweb").hide();
+        $("#payWeixin").hide();
+        $(".payButton").html('启动微信支付');
+    } else if (isUC && isAndroid) {
+        $("#payAliweb").hide();
     }
 
-    if (manageUid == "204" && orderInfoObj.amount >= 5000) {
-        $("#payWeixin").hide().removeClass("selected");
-        $("#payAliweb").trigger("click");
-    }
-    var useAppPay = '0';
-    if (useAppPay == "1") {
-        $("#payForm").trigger("submit");
-    } else {
-        openDialog(document.getElementById("payViews"), "wsdk-payViews");
-        $("#pay-type-items a").click(function(e) {
-            $(this).addClass("selected").siblings("a").removeClass("selected");
-            $(this).find("input[name='paytype']").prop("checked", "checked");
-        });
-    }
-}
+    //cp支付参数
+    var orderInfo;
 
-//在线客服
-function openOnlineService(obj, isShow) {
-    if (isShow == 1) {
-        //移除push标示
-        if ($("#assistive-wrap>.assistive-touch").hasClass("act-on")) {
-            $("#assistive-wrap>.assistive-touch").removeClass("act-on");
+    //回调专用变量
+    var callbackFun = null;
+
+    //调用支付界面
+    function showPayViews(orderInfoObj, callback) {
+
+        orderInfo = orderInfoObj;
+        callbackFun = callback;
+        var payViewObj = $("#payViews");
+        var manageUid = "628";
+        payViewObj.find(".goodsname").html(orderInfoObj.subject);
+        payViewObj.find(".goodsprice").html("¥" + orderInfoObj.amount);
+
+        if ($("#payAliweb").length > 0) {
+            $("#payAliweb").show().removeClass('selected');
+        }
+        if ($("#payWeixin").length > 0) {
+            $("#payWeixin").show().addClass("selected");
         }
 
-        if ($(obj).find("i.tips-had-push").length > 0) {
-            $(obj).find("i.tips-had-push").remove();
+        if (manageUid == "204" && orderInfoObj.amount >= 5000) {
+            $("#payWeixin").hide().removeClass("selected");
+            $("#payAliweb").trigger("click");
         }
-    }
-
-    if ($("#chatFrame").length > 0) {
-        layer.close(globalLayerIndex);
-        $("#chatFrame").show();
-        return;
-    }
-
-    var chatParams = new Object();    //参数
-
-    var url = 'https://test.html';
-    $.each(chatParams, function(k, v) {
-        url += k + '=' + v + '&';
-    })
-
-    var showStyle = '';
-    if (isShow != 1) {
-        showStyle = 'display:none;';
-    }
-
-    var iframeHtml ='<div id="chatFrame" style="position:absolute; z-index:10000; top:0; right:0; left:0; bottom:0; background:white;overflow:hidden;' + showStyle + '" ><iframe scrolling="no" id="chatFrameFrame" style="overflow:hidden" frameborder="0" src="' + url + '"></iframe></div>';
-
-    $("body").append(iframeHtml);
-    var height = $(window).height();
-    var width = $(window).width();
-    $("#chatFrameFrame").css('height', parseInt(height)).css('width', parseInt(width));
-    layer.close(globalLayerIndex);
-}
-
-//隐藏客服页面
-function closeChat() {
-    $("#chatFrame").hide();
-}
-
-//调用账户信息界面
-function showServiceViews(callback) {
-    callbackFun = callback;
-    globalLayerIndex = layer.open({
-        type: 1,
-        content: document.getElementById("serviceBox").innerHTML,
-        anim: 'left',
-        className: 'ucenter-dialog',
-        style: 'position:fixed; top:0; left:0; width: 60%; height: 100%; padding:0; border:none;'
-    });
-}
-
-//调用登录界面
-function showLoginViews(callback) {
-    callbackFun = callback;
-    openDialog(document.getElementById("loginBox"), "wsdk-login-dialog"); 
-}
-
-//支付之后调用登录界面
-function payAfterLoginViews(callbackFunc) {
-    var isLogin = $("#payForm").data("islogin");
-    var loginUid = $("#payForm").data("uid");
-    //特定产品不需游客支付再登录
-    if (isLogin == 0) {
-        showLoginViews(callbackFunc);
-    }
-}
-
-//调用退出登录
-function showLogOutViews() {
-    layer.open({
-        type: 2,
-        shadeClose: false,
-        content: '正在退出...'
-    });
-    var url = "/apiH5/logOut";
-    var urlData = {
-        productCode: "52391587712537540955268025903879",
-        channelCode: "001"
-    };
-    ajaxRequestData(url, urlData, function(rebackData) {
-        setLog(JSON.stringify(rebackData), 3);
-        layer.closeAll();
-        if (rebackData.status == true) {
-            window.location.reload();
+        var useAppPay = '0';
+        if (useAppPay == "1") {
+            $("#payForm").trigger("submit");
         } else {
-            if (rebackData.message != undefined && rebackData.message != "") {
-                layer.open({
-                    content: rebackData.message,
-                    btn: "确定"
-                });
+            openDialog(document.getElementById("payViews"), "wsdk-payViews");
+            $("#pay-type-items a").click(function(e) {
+                $(this).addClass("selected").siblings("a").removeClass("selected");
+                $(this).find("input[name='paytype']").prop("checked", "checked");
+            });
+        }
+    }
+
+    //在线客服
+    function openOnlineService(obj, isShow) {
+        if (isShow == 1) {
+            //移除push标示
+            if ($("#assistive-wrap>.assistive-touch").hasClass("act-on")) {
+                $("#assistive-wrap>.assistive-touch").removeClass("act-on");
+            }
+
+            if ($(obj).find("i.tips-had-push").length > 0) {
+                $(obj).find("i.tips-had-push").remove();
             }
         }
-    });
-    return false;
-}
 
-//调用修改密码/注册账号界面
-function showRegBox(regboxId) {
-    layer.close(globalLayerIndex);
-    openDialog(document.getElementById(regboxId), "wsdk-" + regboxId + "-dialog");
-}
+        if ($("#chatFrame").length > 0) {
+            layer.close(globalLayerIndex);
+            $("#chatFrame").show();
+            return;
+        }
 
-//调用用户协议界面
-function showAgreementBox(regboxId) {
-    var objd = document.getElementById(regboxId);
-    var hengCss = 'border: none; -webkit-animation-duration: .5s; animation-duration: .5s;border-radius:4px;-webkit-border-radius:4px;';
-    var html = objd.innerHTML;
-    var classname = "wsdk-" + regboxId + "-dialog";
-    var globalLayerSubIndex = layer.open({
-        type: 1,
-        content: html,
-        style: hengCss,
-        shadeClose: false,
-        className: classname
-    });
+        var chatParams = new Object();
+        //参数
 
-    $('.'+classname+" .sub-box-close").click(function(){
-    	layer.close(globalLayerSubIndex);
-    })
-}
+        var url = 'https://test.html';
+        $.each(chatParams, function(k, v) {
+            url += k + '=' + v + '&';
+        })
 
-//调用显示、隐藏浮标菜单
-function showToggleModalMenu(menuStatus) {
-    if (menuStatus == "OPEN") {
-        $("#assistive-wrap").css("display", "block");
-    } else if (menuStatus == "CLOSE") {
-        $("#assistive-wrap").css("display", "none");
-    } else {
-        $("#assistive-wrap").css("display", "block");
-    }
-}
+        var showStyle = '';
+        if (isShow != 1) {
+            showStyle = 'display:none;';
+        }
 
-//用户提示信息框
-function noteUserMsg(tipsObj) {
-    var replyContent = "您收到一条信息";
-    if (tipsObj.retMsg && tipsObj.retMsg != "") {
-        var replyContent = tipsObj.retMsg;
-    }
-    var avatarUrl = "";
-    if (tipsObj.avatarUrl && tipsObj.avatarUrl != "") {
-        var avatarUrl = tipsObj.avatarUrl;
-    }
-    var leftTime = 10;
-    if (tipsObj.closeTime) {
-        var leftTime = tipsObj.closeTime;
+        var iframeHtml = '<div id="chatFrame" style="position:absolute; z-index:10000; top:0; right:0; left:0; bottom:0; background:white;overflow:hidden;' + showStyle + '" ><iframe scrolling="no" id="chatFrameFrame" style="overflow:hidden" frameborder="0" src="' + url + '"></iframe></div>';
+
+        $("body").append(iframeHtml);
+        var height = $(window).height();
+        var width = $(window).width();
+        $("#chatFrameFrame").css('height', parseInt(height)).css('width', parseInt(width));
+        layer.close(globalLayerIndex);
     }
 
-    $("#msg-con").html(replyContent);
-    if (avatarUrl != "") {
-        $("#msg-avatar").prop("scr", avatarUrl);
+    //隐藏客服页面
+    function closeChat() {
+        $("#chatFrame").hide();
     }
-    setTimeout(function() {
-        $("#userMsgTips").css("top", "-70px").hide();
-    }, leftTime * 1000);
-    $("#userMsgTips").css("top", "0px").show();
-}
 
-//购买商品
-$(document).on("submit", "#payForm", function(e) {
-    var manageUid = "628";
-    if (manageUid == "204" && orderInfo.amount >= 5000) {
-        $(this).find("#payAliweb input[name='paytype']").prop("checked", "checked");
+    //调用账户信息界面
+    function showServiceViews(callback) {
+        callbackFun = callback;
+        globalLayerIndex = layer.open({
+            type: 1,
+            content: document.getElementById("serviceBox").innerHTML,
+            anim: 'left',
+            className: 'ucenter-dialog',
+            style: 'position:fixed; top:0; left:0; width: 60%; height: 100%; padding:0; border:none;'
+        });
     }
-    var urlData = $(this).serialize();
 
-    var url = $(this).prop("action");
-    var dataPay = $(this).find("input[name='paytype']:checked").val();
-    var goodsId = '';
-    if (orderInfo.hasOwnProperty('goodsId') && orderInfo.goodsId != undefined) {
-        goodsId = orderInfo.goodsId;
+    //调用登录界面
+    function showLoginViews(callback) {
+        callbackFun = callback;
+        openDialog(document.getElementById("loginBox"), "wsdk-login-dialog");
     }
-    url += "?" + urlData + "&productCode=52391587712537540955268025903879&channelCode=001&openid=";
-    var reqData = orderInfo;
-    ajaxRequestData(url, reqData, function(rebackData) {
-        setLog(JSON.stringify(rebackData), 3);
-        if (rebackData.data.status == true && (rebackData.data.data.payParams != "" && rebackData.data.data.hasOwnProperty("payParams"))) {
+
+    //支付之后调用登录界面
+    function payAfterLoginViews(callbackFunc) {
+        var isLogin = $("#payForm").data("islogin");
+        var loginUid = $("#payForm").data("uid");
+        //特定产品不需游客支付再登录
+        if (isLogin == 0) {
+            showLoginViews(callbackFunc);
+        }
+    }
+
+    //调用退出登录
+    function showLogOutViews() {
+        layer.open({
+            type: 2,
+            shadeClose: false,
+            content: '正在退出...'
+        });
+        var url = "/apiH5/logOut";
+        var urlData = {
+            productCode: "52391587712537540955268025903879",
+            channelCode: "001"
+        };
+        ajaxRequestData(url, urlData, function(rebackData) {
+            setLog(JSON.stringify(rebackData), 3);
             layer.closeAll();
-            if (dataPay == 10) {
-                if (isiPhone || isiPad || isAndroid || isWhale) {
-                    if (isWeixin) {
-                        var payBackData = rebackData.data.data.payParams;
+            if (rebackData.status == true) {
+                window.location.reload();
+            } else {
+                if (rebackData.message != undefined && rebackData.message != "") {
+                    layer.open({
+                        content: rebackData.message,
+                        btn: "确定"
+                    });
+                }
+            }
+        });
+        return false;
+    }
 
-                        if (typeof WeixinJSBridge == "undefined") {
-                            if (document.addEventListener) {
-                                document.addEventListener('WeixinJSBridgeReady', wxJsPay(payBackData), false);
-                            } else if (document.attachEvent) {
-                                document.attachEvent('WeixinJSBridgeReady', wxJsPay(payBackData));
-                                document.attachEvent('onWeixinJSBridgeReady', wxJsPay(payBackData));
+    //调用修改密码/注册账号界面
+    function showRegBox(regboxId) {
+        layer.close(globalLayerIndex);
+        openDialog(document.getElementById(regboxId), "wsdk-" + regboxId + "-dialog");
+    }
+
+    //调用用户协议界面
+    function showAgreementBox(regboxId) {
+        var objd = document.getElementById(regboxId);
+        var hengCss = 'border: none; -webkit-animation-duration: .5s; animation-duration: .5s;border-radius:4px;-webkit-border-radius:4px;';
+        var html = objd.innerHTML;
+        var classname = "wsdk-" + regboxId + "-dialog";
+        var globalLayerSubIndex = layer.open({
+            type: 1,
+            content: html,
+            style: hengCss,
+            shadeClose: false,
+            className: classname
+        });
+
+        $('.' + classname + " .sub-box-close").click(function() {
+            layer.close(globalLayerSubIndex);
+        })
+    }
+
+    //调用显示、隐藏浮标菜单
+    function showToggleModalMenu(menuStatus) {
+        if (menuStatus == "OPEN") {
+            $("#assistive-wrap").css("display", "block");
+        } else if (menuStatus == "CLOSE") {
+            $("#assistive-wrap").css("display", "none");
+        } else {
+            $("#assistive-wrap").css("display", "block");
+        }
+    }
+
+    //用户提示信息框
+    function noteUserMsg(tipsObj) {
+        var replyContent = "您收到一条信息";
+        if (tipsObj.retMsg && tipsObj.retMsg != "") {
+            var replyContent = tipsObj.retMsg;
+        }
+        var avatarUrl = "";
+        if (tipsObj.avatarUrl && tipsObj.avatarUrl != "") {
+            var avatarUrl = tipsObj.avatarUrl;
+        }
+        var leftTime = 10;
+        if (tipsObj.closeTime) {
+            var leftTime = tipsObj.closeTime;
+        }
+
+        $("#msg-con").html(replyContent);
+        if (avatarUrl != "") {
+            $("#msg-avatar").prop("scr", avatarUrl);
+        }
+        setTimeout(function() {
+            $("#userMsgTips").css("top", "-70px").hide();
+        }, leftTime * 1000);
+        $("#userMsgTips").css("top", "0px").show();
+    }
+
+    //购买商品
+    $(document).on("submit", "#payForm", function(e) {
+        var manageUid = "628";
+        if (manageUid == "204" && orderInfo.amount >= 5000) {
+            $(this).find("#payAliweb input[name='paytype']").prop("checked", "checked");
+        }
+        var urlData = $(this).serialize();
+
+        var url = $(this).prop("action");
+        var dataPay = $(this).find("input[name='paytype']:checked").val();
+        var goodsId = '';
+        if (orderInfo.hasOwnProperty('goodsId') && orderInfo.goodsId != undefined) {
+            goodsId = orderInfo.goodsId;
+        }
+        url += "?" + urlData + "&productCode=52391587712537540955268025903879&channelCode=001&openid=";
+        var reqData = orderInfo;
+        ajaxRequestData(url, reqData, function(rebackData) {
+            setLog(JSON.stringify(rebackData), 3);
+            if (rebackData.data.status == true && (rebackData.data.data.payParams != "" && rebackData.data.data.hasOwnProperty("payParams"))) {
+                layer.closeAll();
+                if (dataPay == 10) {
+                    if (isiPhone || isiPad || isAndroid || isWhale) {
+                        if (isWeixin) {
+                            var payBackData = rebackData.data.data.payParams;
+
+                            if (typeof WeixinJSBridge == "undefined") {
+                                if (document.addEventListener) {
+                                    document.addEventListener('WeixinJSBridgeReady', wxJsPay(payBackData), false);
+                                } else if (document.attachEvent) {
+                                    document.attachEvent('WeixinJSBridgeReady', wxJsPay(payBackData));
+                                    document.attachEvent('onWeixinJSBridgeReady', wxJsPay(payBackData));
+                                }
+                            } else {
+                                wxJsPay(payBackData);
                             }
                         } else {
-                            wxJsPay(payBackData);
+                            var htmlCont = "<div class='wxpay-box'><div class='wxpay-top'><img src='' /></div></div>";
+                            $("#wxpay-con").find(".pay-now").prop("href", rebackData.data.data.payParams);
+                            openDialog(document.getElementById("wxpay-con"), "wxpay");
                         }
                     } else {
-                        var htmlCont = "<div class='wxpay-box'><div class='wxpay-top'><img src='' /></div></div>";
-                        $("#wxpay-con").find(".pay-now").prop("href", rebackData.data.data.payParams);
-                        openDialog(document.getElementById("wxpay-con"), "wxpay");
+                        $("#payFrame iframe").prop("src", rebackData.data.data.payParams);
+                        globalPageIndex = layer.open({
+                            type: 1,
+                            content: $("#payFrame").html(),
+                            anim: 'up',
+                            className: 'payFrameDialog',
+                            shadeClose: false,
+                            style: 'height:300px;width:300px; border: none; -webkit-animation-duration: .5s; animation-duration: .5s;text-align:center;'
+                        });
                     }
+
+                    if (callbackFun != null) {
+                        callbackFun(rebackData);
+                    }
+                } else if (dataPay == 8) {
+                    //苹果内购
+                    var payObject = new Object();
+                    payObject.orderNo = rebackData.data.data.orderNo;
+                    payObject.uid = "66034315";
+                    if (goodsId == '') {
+                        goodsId = '108zuanshi';
+                    }
+                    payObject.goodsId = goodsId;
+                    payObject.productCode = "52391587712537540955268025903879";
+                    var sendString = JSON.stringify(payObject);
+                    window.webkit.messageHandlers.appstoreBuy.postMessage({
+                        body: sendString
+                    });
+
                 } else {
                     $("#payFrame iframe").prop("src", rebackData.data.data.payParams);
                     globalPageIndex = layer.open({
@@ -616,66 +680,34 @@ $(document).on("submit", "#payForm", function(e) {
                         anim: 'up',
                         className: 'payFrameDialog',
                         shadeClose: false,
-                        style: 'height:300px;width:300px; border: none; -webkit-animation-duration: .5s; animation-duration: .5s;text-align:center;'
+                        style: 'height:480px; width:90%; border: none; -webkit-animation-duration: .5s; animation-duration: .5s;'
                     });
                 }
-
+            } else {
                 if (callbackFun != null) {
                     callbackFun(rebackData);
+                    layer.closeAll();
                 }
-            } else if (dataPay == 8) {
-                //苹果内购
-                var payObject = new Object();
-                payObject.orderNo = rebackData.data.data.orderNo;
-                payObject.uid = "66034315";
-                if (goodsId == '') {
-                    goodsId = '108zuanshi';
+                var errorMsg = "创建支付链接失败";
+                if (rebackData.data.message != undefined && rebackData.data.message != "") {
+                    errorMsg = rebackData.data.message;
                 }
-                payObject.goodsId = goodsId;
-                payObject.productCode = "52391587712537540955268025903879";
-                var sendString = JSON.stringify(payObject);
-                window.webkit.messageHandlers.appstoreBuy.postMessage({
-                    body: sendString
-                });
-
-            } else {
-                $("#payFrame iframe").prop("src", rebackData.data.data.payParams);
-                globalPageIndex = layer.open({
-                    type: 1,
-                    content: $("#payFrame").html(),
-                    anim: 'up',
-                    className: 'payFrameDialog',
-                    shadeClose: false,
-                    style: 'height:480px; width:90%; border: none; -webkit-animation-duration: .5s; animation-duration: .5s;'
-                });
+                alert(errorMsg);
             }
-        } else {
-            if (callbackFun != null) {
-                callbackFun(rebackData);
-                layer.closeAll();
-            }
-            var errorMsg = "创建支付链接失败";
-            if (rebackData.data.message != undefined && rebackData.data.message != "") {
-                errorMsg = rebackData.data.message;
-            }
-            alert(errorMsg);
-        }
+        });
+        return false;
     });
-    return false;
-});
 
-//微信支付js
-function wxJsPay(payBackData) {
-    WeixinJSBridge.invoke(
-        'getBrandWCPayRequest', {
+    //微信支付js
+    function wxJsPay(payBackData) {
+        WeixinJSBridge.invoke('getBrandWCPayRequest', {
             "appId": payBackData.wxAppId,
             "timeStamp": payBackData.timeStamp,
             "nonceStr": payBackData.nonceStr,
             "package": "prepay_id=" + payBackData.prepay_id,
             "signType": "MD5",
             "paySign": payBackData.paySign
-        },
-        function(res) {
+        }, function(res) {
             if (res.err_msg == "get_brand_wcpay_request:ok") {
                 layer.open({
                     content: "支付成功",
@@ -692,161 +724,161 @@ function wxJsPay(payBackData) {
                     btn: "确定"
                 });
             }
-        }
-    );
-}
-
-//用户登录
-$(document).on("submit", "#loginForm", function(e) {
-    var urlData = $(this).serialize();
-    var url = $(this).attr("action");
-    var username = $(this).find("input[name='username']").val();
-    var pwd = $(this).find("input[name='password']").val();
-    urlData += "&productCode=52391587712537540955268025903879";
-    if (username.length < 4) {
-        layer.open({
-            content: "用户名格式错误",
-            btn: "确定"
         });
-        return false;
-    }
-    if (pwd.length < 6) {
-        layer.open({
-            content: "密码格式错误",
-            btn: "确定"
-        });
-        return false;
     }
 
-    ajaxRequestData(url, urlData, function(rebackData) {
-        setLog(JSON.stringify(rebackData), 3);
-        if (callbackFun != null) {
-            callbackFun(rebackData);
-        }
-        if (rebackData.status == true) {
-            window.location.reload();
-        } else {
-            if (rebackData.message != "" && rebackData.message != undefined) {
-                layer.open({
-                    content: rebackData.message,
-                    btn: "确定"
-                });
-                return false;
-            } else {
-                layer.closeAll();
-            }
-        }
-    });
-    return false;
-});
-//用户账号注册
-$(document).on("submit", "#regAcountForm", function(e) {
-    var urlData = $(this).serialize();
-    var url = $(this).attr("action");
-    var username = $(this).find("input[name='username']").val();
-    var pwd = $(this).find("input[name='password']").val();
-    urlData += "&productCode=52391587712537540955268025903879&channelCode=001";
-    var checkUName = checkUname(username);
-    if (checkUName.status == false) {
-        layer.open({
-            content: checkUName.msg,
-            btn: "确定"
-        });
-        return false;
-    }
-
-    if (pwd.length < 6 || pwd.length > 16) {
-        layer.open({
-            content: "密码格式错误",
-            btn: "确定"
-        });
-        return false;
-    }
-    if ($(this).find("input[name='agreement']").prop("checked") != true) {
-        layer.open({
-            content: "请同意用户注册协议",
-            btn: "确定"
-        });
-        return false;
-    }
-
-    ajaxRequestData(url, urlData, function(rebackData) {
-        setLog(JSON.stringify(rebackData), 3);
-        if (callbackFun != null) {
-            callbackFun(rebackData);
-        }
-        if (rebackData.status == false && rebackData.hasOwnProperty("message") && rebackData.message != '') {
+    //用户登录
+    $(document).on("submit", "#loginForm", function(e) {
+        var urlData = $(this).serialize();
+        var url = $(this).attr("action");
+        var username = $(this).find("input[name='username']").val();
+        var pwd = $(this).find("input[name='password']").val();
+        urlData += "&productCode=52391587712537540955268025903879";
+        if (username.length < 4) {
             layer.open({
-                content: rebackData.message,
+                content: "用户名格式错误",
                 btn: "确定"
             });
+            return false;
         }
-        if (rebackData.status == true) {
-            window.location.reload();
-        }
-    });
-    return false;
-});
-
-//用户密码修改
-$(document).on("submit", "#editInfoForm", function(e) {
-    var urlData = $(this).serialize();
-    var url = $(this).attr("action");
-    var pwd = $(this).find("input[name='newpassword']").val();
-    var repwd = $(this).find("input[name='rePassword']").val();
-    urlData += "&productCode=52391587712537540955268025903879";
-    if (pwd.length < 6) {
-        layer.open({
-            content: "密码格式错误",
-            btn: "确定"
-        });
-        return false;
-    }
-    if (pwd != repwd) {
-        layer.open({
-            content: "两次密码输入不一致" + owd + repwd,
-            btn: "确定"
-        });
-        return false;
-    }
-    ajaxRequestData(url, urlData, function(rebackData) {
-        if (rebackData.status == true) {
+        if (pwd.length < 6) {
             layer.open({
-                content: "密码修改成功，请重新登录！",
-                btn: "确定",
-                yes: function() {
-                    window.location.reload();
-                }
+                content: "密码格式错误",
+                btn: "确定"
             });
-        } else {
-            if (rebackData.message != "" && rebackData.message != undefined) {
+            return false;
+        }
+
+        ajaxRequestData(url, urlData, function(rebackData) {
+            setLog(JSON.stringify(rebackData), 3);
+            if (callbackFun != null) {
+                callbackFun(rebackData);
+            }
+            if (rebackData.status == true) {
+                window.location.reload();
+            } else {
+                if (rebackData.message != "" && rebackData.message != undefined) {
+                    layer.open({
+                        content: rebackData.message,
+                        btn: "确定"
+                    });
+                    return false;
+                } else {
+                    layer.closeAll();
+                }
+            }
+        });
+        return false;
+    });
+
+    //用户账号注册
+    $(document).on("submit", "#regAcountForm", function(e) {
+        var urlData = $(this).serialize();
+        var url = $(this).attr("action");
+        var username = $(this).find("input[name='username']").val();
+        var pwd = $(this).find("input[name='password']").val();
+        urlData += "&productCode=52391587712537540955268025903879&channelCode=001";
+        var checkUName = checkUname(username);
+        if (checkUName.status == false) {
+            layer.open({
+                content: checkUName.msg,
+                btn: "确定"
+            });
+            return false;
+        }
+
+        if (pwd.length < 6 || pwd.length > 16) {
+            layer.open({
+                content: "密码格式错误",
+                btn: "确定"
+            });
+            return false;
+        }
+        if ($(this).find("input[name='agreement']").prop("checked") != true) {
+            layer.open({
+                content: "请同意用户注册协议",
+                btn: "确定"
+            });
+            return false;
+        }
+
+        ajaxRequestData(url, urlData, function(rebackData) {
+            setLog(JSON.stringify(rebackData), 3);
+            if (callbackFun != null) {
+                callbackFun(rebackData);
+            }
+            if (rebackData.status == false && rebackData.hasOwnProperty("message") && rebackData.message != '') {
                 layer.open({
                     content: rebackData.message,
                     btn: "确定"
                 });
-                return false;
-            } else {
-                layer.closeAll();
             }
-        }
+            if (rebackData.status == true) {
+                window.location.reload();
+            }
+        });
+        return false;
     });
-    return false;
-});
 
-//监听cp事件
-window.addEventListener("message", function(event) {
-    var callData = event.data;
-    try {
-        var callArr = JSON.parse(callData);
-    } catch (e) {
-        return;
-    }
+    //用户密码修改
+    $(document).on("submit", "#editInfoForm", function(e) {
+        var urlData = $(this).serialize();
+        var url = $(this).attr("action");
+        var pwd = $(this).find("input[name='newpassword']").val();
+        var repwd = $(this).find("input[name='rePassword']").val();
+        urlData += "&productCode=52391587712537540955268025903879";
+        if (pwd.length < 6) {
+            layer.open({
+                content: "密码格式错误",
+                btn: "确定"
+            });
+            return false;
+        }
+        if (pwd != repwd) {
+            layer.open({
+                content: "两次密码输入不一致" + owd + repwd,
+                btn: "确定"
+            });
+            return false;
+        }
+        ajaxRequestData(url, urlData, function(rebackData) {
+            if (rebackData.status == true) {
+                layer.open({
+                    content: "密码修改成功，请重新登录！",
+                    btn: "确定",
+                    yes: function() {
+                        window.location.reload();
+                    }
+                });
+            } else {
+                if (rebackData.message != "" && rebackData.message != undefined) {
+                    layer.open({
+                        content: rebackData.message,
+                        btn: "确定"
+                    });
+                    return false;
+                } else {
+                    layer.closeAll();
+                }
+            }
+        });
+        return false;
+    });
 
-    if (callArr.action == undefined) {
-        return;
-    }
-    var params = callArr.params;
-    switch (callArr.action) {
+    //监听cp事件
+    window.addEventListener("message", function(event) {
+        var callData = event.data;
+        try {
+            var callArr = JSON.parse(callData);
+        } catch (e) {
+            return;
+        }
+
+        if (callArr.action == undefined) {
+            return;
+        }
+        var params = callArr.params;
+        switch (callArr.action) {
         case 'closeChatForm':
             closeChat();
             if (params == 1) {
@@ -867,60 +899,59 @@ window.addEventListener("message", function(event) {
                 noteUserMsg(messageObject);
             }
             break;
-    }
-}, false);
-
-//浮标隐藏
-$(".closeBtn").click(function() {
-    $(this).parent().hide();
-});
-
-//广告相关事件 登录事件
-
-$(document).ready(function() {
-    triggerAd_login();
-    triggerAd_active();
-})
-
-function triggerAd_login() {
-    if (navigator.userAgent == 'WhaleBrowser') {
-        var eventObject = new Object();
-        eventObject.action = "ad_login";
-        var dataObject = new Object();
-        dataObject.uid = '66034315';
-        dataObject.username = 'junyu05';
-        eventObject.data = dataObject;
-        var sendString = JSON.stringify(eventObject);
-        window.webkit.messageHandlers.eventComplete.postMessage(sendString);
-    }
-}
-
-function triggerAd_updateRole(roleObject) {
-    if (navigator.userAgent == 'WhaleBrowser') {
-        var eventObject = new Object();
-        eventObject.action = "ad_updateRole";
-        try {
-            eventObject.data = JSON.parse(roleObject);
-        } catch (e) {
-
         }
+    }, false);
 
-        var sendString = JSON.stringify(eventObject);
-        window.webkit.messageHandlers.eventComplete.postMessage(sendString);
-    }
-}
+    //浮标隐藏
+    $(".closeBtn").click(function() {
+        $(this).parent().hide();
+    });
 
-function triggerAd_active() {
-    if (navigator.userAgent == 'WhaleBrowser') {
-        var eventObject = new Object();
-        eventObject.action = "ad_active";
-        var dataObject = new Object();
-        dataObject.uid = '66034315';
-        dataObject.username = 'junyu05';
-        dataObject.roleId = dataObject.uid;
-        eventObject.data = dataObject;
-        var sendString = JSON.stringify(eventObject);
-        window.webkit.messageHandlers.eventComplete.postMessage(sendString);
+    //广告相关事件 登录事件
+
+    $(document).ready(function() {
+        triggerAd_login();
+        triggerAd_active();
+    })
+
+    function triggerAd_login() {
+        if (navigator.userAgent == 'WhaleBrowser') {
+            var eventObject = new Object();
+            eventObject.action = "ad_login";
+            var dataObject = new Object();
+            dataObject.uid = '66034315';
+            dataObject.username = 'junyu05';
+            eventObject.data = dataObject;
+            var sendString = JSON.stringify(eventObject);
+            window.webkit.messageHandlers.eventComplete.postMessage(sendString);
+        }
     }
-}
+
+    function triggerAd_updateRole(roleObject) {
+        if (navigator.userAgent == 'WhaleBrowser') {
+            var eventObject = new Object();
+            eventObject.action = "ad_updateRole";
+            try {
+                eventObject.data = JSON.parse(roleObject);
+            } catch (e) {
+            }
+
+            var sendString = JSON.stringify(eventObject);
+            window.webkit.messageHandlers.eventComplete.postMessage(sendString);
+        }
+    }
+
+    function triggerAd_active() {
+        if (navigator.userAgent == 'WhaleBrowser') {
+            var eventObject = new Object();
+            eventObject.action = "ad_active";
+            var dataObject = new Object();
+            dataObject.uid = '66034315';
+            dataObject.username = 'junyu05';
+            dataObject.roleId = dataObject.uid;
+            eventObject.data = dataObject;
+            var sendString = JSON.stringify(eventObject);
+            window.webkit.messageHandlers.eventComplete.postMessage(sendString);
+        }
+    }
 </script>
