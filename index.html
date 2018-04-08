@@ -375,7 +375,7 @@ if (isWeixin) {
 //调起支付页面
 var orderInfo;
 var callbackFun = null;
-var global;
+
 //调用支付界面
 function showPayViews(orderInfoObj, callback) {
 
@@ -402,14 +402,14 @@ function showPayViews(orderInfoObj, callback) {
         $("#payForm").trigger("submit");
     } else {
         openDialog(document.getElementById("payViews"), "wsdk-payViews");
+        $("#pay-type-items a").click(function(e) {
+            $(this).addClass("selected").siblings("a").removeClass("selected");
+            $(this).find("input[name='paytype']").prop("checked", "checked");
+        });
     }
 }
-showPayViews({},null)
-$("#userMsgTips").click(function() {
-    $("#onlineService").trigger('click');
-    $("#userMsgTips").hide();
-})
 
+//在线客服
 function openOnlineService(obj, isShow) {
     if (isShow == 1) {
         //移除push标示
@@ -440,7 +440,7 @@ function openOnlineService(obj, isShow) {
         showStyle = 'display:none;';
     }
 
-    var iframeHtml = '<div id="chatFrame" style="position:absolute; z-index:10000; top:0; right:0; left:0; bottom:0; background:white;overflow:hidden;' + showStyle + '" ><iframe scrolling="no" id="chatFrameFrame" style="overflow:hidden" frameborder="0" src="' + url + '"></iframe></div>';
+    var iframeHtml ='<div id="chatFrame" style="position:absolute; z-index:10000; top:0; right:0; left:0; bottom:0; background:white;overflow:hidden;' + showStyle + '" ><iframe scrolling="no" id="chatFrameFrame" style="overflow:hidden" frameborder="0" src="' + url + '"></iframe></div>';
 
     $("body").append(iframeHtml);
     var height = $(window).height();
@@ -449,14 +449,11 @@ function openOnlineService(obj, isShow) {
     layer.close(globalLayerIndex);
 }
 
+//隐藏客服页面
 function closeChat() {
     $("#chatFrame").hide();
 }
 
-function closeIFrame() {
-    $("#payFrameDialog").attr('src', '');
-    layer.close(globalPageIndex);
-}
 //调用账户信息界面
 function showServiceViews(callback) {
     callbackFun = callback;
@@ -468,6 +465,7 @@ function showServiceViews(callback) {
         style: 'position:fixed; top:0; left:0; width: 60%; height: 100%; padding:0; border:none;'
     });
 }
+
 //调用登录界面
 function showLoginViews(callback) {
     callbackFun = callback;
@@ -572,11 +570,6 @@ function noteUserMsg(tipsObj) {
     }, leftTime * 1000);
     $("#userMsgTips").css("top", "0px").show();
 }
-
-$(document).on("click", "#pay-type-items a", function(e) {
-    $(this).addClass("selected").siblings("a").removeClass("selected");
-    $(this).find("input[name='paytype']").prop("checked", "checked");
-});
 
 //购买商品
 $(document).on("submit", "#payForm", function(e) {
@@ -880,7 +873,7 @@ window.addEventListener("message", function(event) {
     }
 }, false);
 
-
+//浮标隐藏
 $(".closeBtn").click(function() {
     $(this).parent().hide();
 });
