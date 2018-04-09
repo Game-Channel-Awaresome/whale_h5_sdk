@@ -123,9 +123,9 @@ function getSDKOrderData(orderData, callback) {
                 rebackObj.message = '请求接口失败无法获取响应';
                 return callback(rebackObj);
             }
-            if (!respData.hasOwnProperty('status') || respData.status == false) {
-                if (rebackObj.message != undefined || rebackObj.message == '' || !respData.hasOwnProperty('message')) {
-                    rebackObj.message = '请求接口失败';
+            if (!respData.status) {
+                if (!rebackObj.message) {
+                    rebackObj.message = '获取订单号失败';
                 } else {
                     rebackObj.message = respData.message;
                 }
@@ -137,7 +137,7 @@ function getSDKOrderData(orderData, callback) {
         },
         error: function() {
             rebackObj.status = false;
-            rebackObj.message = "接口请求失败";
+            rebackObj.message = "获取订单号失败";
             return callback(rebackObj);
         }
     });

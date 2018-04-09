@@ -43,6 +43,7 @@
     body input {
         padding: 5px 15px;
         margin: 5px;
+        background-color: #fff;
     }
     </style>
 
@@ -77,6 +78,10 @@
             SDK.init(productCode, productKey, true)
         })
         $('#pay').click(function() {
+            var obj=JSON.stringify({"productCode":"43149786904116483855343168011346","uid":"66087957","userRoleId":"66087957","userRoleName":"飞虹灬芷云","userServer":9999,"userLevel":1,"cpOrderNo":"66087957_1523496595_9999_quick-test","amount":25,"subject":"月卡","desc":"月卡X1","callbackUrl":"","extrasParams":"","goodsId":"1111","count":1,"quantifier":"元"})
+            SDK.pay(obj,function(res){
+                console.log(res);
+            })
 
         })
         $('#menu').click(function() {

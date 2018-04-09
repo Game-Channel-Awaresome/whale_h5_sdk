@@ -418,7 +418,6 @@
         orderInfo = orderInfoObj;
         callbackFun = callback;
         var payViewObj = $("#payViews");
-        var manageUid = "628";
         payViewObj.find(".goodsname").html(orderInfoObj.subject);
         payViewObj.find(".goodsprice").html("¥" + orderInfoObj.amount);
 
@@ -429,10 +428,6 @@
             $("#payWeixin").show().addClass("selected");
         }
 
-        if (manageUid == "204" && orderInfoObj.amount >= 5000) {
-            $("#payWeixin").hide().removeClass("selected");
-            $("#payAliweb").trigger("click");
-        }
         var useAppPay = '0';
         if (useAppPay == "1") {
             $("#payForm").trigger("submit");
@@ -923,7 +918,7 @@
     //Ad统计
     function triggerAd(type) {
         var eventObject ={
-            action :type "ad_active",
+            action :type,
             uid : USER.uid,
             username : USER.username
         }
