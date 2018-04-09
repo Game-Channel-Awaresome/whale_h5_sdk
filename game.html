@@ -17,26 +17,100 @@
     <meta name="browsermode" content="application">
     <link rel="dns-prefetch" href="//">
     <!--sdk-->
-    <script src="/cp/libWhaleSDK.js"></script>
+    <script src="/cp/libSDK.js"></script>
     <style>
-        body {
-            -ms-touch-action: none;
-            background: #000;
-            padding: 0;
-            border: 0;
-            margin: 0;
-            height: 100%;
-            -webkit-touch-callout: none; /* iOS Safari */
-            -webkit-user-select: none; /* Chrome/Safari/Opera */
-            -khtml-user-select: none; /* Konqueror */
-            -moz-user-select: none; /* Firefox */
-            -ms-user-select: none; /* Internet Explorer/Edge */
-            user-select: none; /* Non-prefixed version, currently not supported by any browser */
-        }
+    body {
+        -ms-touch-action: none;
+        background: #000;
+        padding: 0;
+        border: 0;
+        margin: 0;
+        height: 100%;
+        -webkit-touch-callout: none;
+        /* iOS Safari */
+        -webkit-user-select: none;
+        /* Chrome/Safari/Opera */
+        -khtml-user-select: none;
+        /* Konqueror */
+        -moz-user-select: none;
+        /* Firefox */
+        -ms-user-select: none;
+        /* Internet Explorer/Edge */
+        user-select: none;
+        /* Non-prefixed version, currently not supported by any browser */
+    }
+    
+    body input {
+        padding: 5px 15px;
+        margin: 5px;
+    }
     </style>
 
-    <body>
+    <body style="text-align: right;">
+        <P>
+            <input type="button" value="登录" id="login">
+        </P>
+        <P>
+            <input type="button" value="初始化" id="init">
+        </P>
+        <P>
+            <input type="button" value="调起支付" id="pay">
+        </P>
+        <P>
+            <input type="button" value="调起浮标" id="menu">
+        </P>
+        <P>
+            <input type="button" value="获取用户信息" id="userInfo">
+        </P>
+        <P>
+            <input type="button" value="提交角色信息" id="role">
+        </P>
+        <script type="text/javascript">
+        $('#login').click(function() {
+            SDK.login(function(params) {
+                console.log(params)
+            })
+        })
+        $('#init').click(function() {
+            var productCode = '43149786904116483855343168011346'
+            var productKey = '75073832'
+            SDK.init(productCode, productKey, true)
+        })
+        $('#pay').click(function() {
 
+        })
+        $('#menu').click(function() {
+            SDK.toggleModalMenu('CLOSE')
+        })
+        $('#userInfo').click(function() {
+            SDK.getUserInfo(function(res) {
+                console.log(res)
+            })
+        })
+        $('#role').click(function() {
+            var roleInfo = {
+                isCreateRole:true,
+                roleCreateTime:1490598150,
+                serverId:1,
+                serverName:'内测1区',
+                userRoleName:'小朋友',
+                userRoleId:'roleId1',
+                userRoleBalance:1000,
+                vipLevel:1,
+                userRoleLevel:1,
+                partyId:1,
+                partyName:'行会名称',
+                gameRoleGender:'男',
+                gameRolePower:100,
+                partyRoleId:1,
+                partyRoleName:'会长',
+                professionId:'1',
+                profession:'武士',
+                friendlist: ''
+            }
+            SDK.uploadGameRoleInfo(JSON.stringify(roleInfo))
+        })
+        </script>
     </body>
 
 </html>

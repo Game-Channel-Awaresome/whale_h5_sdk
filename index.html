@@ -50,7 +50,7 @@
             <a href="javascript:void(0)" class="box-close">
                 <img class="closeImage" src="/resource/images/controls_close.png" alt=""/>
             </a>
-            <form id="payForm" action="/apiH5/ajaxPayDo" data-islogin="1" data-uid="66034315">
+            <form id="payForm" action="/ajaxPayDo">
                 <div class="payViews">
                     <div class="payTitle">支付中心</div>
                     <div style="height: 1%;"></div>
@@ -317,6 +317,14 @@
     </body>
 </html>
 <script>
+    var USER={
+        "uid": "66355886",
+        "username": "junyu05",
+        "token": "f4087e45e27a616deee22b4b285a8e1d",
+        "isLogin": false, //是否游客登录
+        "productCode": "52391587712537540955268025903879",
+        "channelCode": "001"
+    }
     //浮标悬浮球
     var assistiveLeft, assistiveRight, timerid;
 
@@ -390,7 +398,6 @@
     var isiPad = ua.indexOf("ipad") != -1;
     var isAndroid = ua.indexOf("android") != -1;
     var isUC = ua.indexOf('ucbrowser') != -1;
-    var isWhale = ua.indexOf('whale') != -1;
     if (isWeixin) {
         $("#payAliweb").hide();
         $("#payWeixin").hide();
@@ -504,10 +511,8 @@
 
     //支付之后调用登录界面
     function payAfterLoginViews(callbackFunc) {
-        var isLogin = $("#payForm").data("islogin");
-        var loginUid = $("#payForm").data("uid");
         //特定产品不需游客支付再登录
-        if (isLogin == 0) {
+        if (!USER.isLogin) {
             showLoginViews(callbackFunc);
         }
     }
@@ -519,15 +524,15 @@
             shadeClose: false,
             content: '正在退出...'
         });
-        var url = "/apiH5/logOut";
+        var url = "/logOut";
         var urlData = {
-            productCode: "52391587712537540955268025903879",
-            channelCode: "001"
+            productCode: USER.productCode,
+            channelCode: USER.channelCode
         };
         ajaxRequestData(url, urlData, function(rebackData) {
             setLog(JSON.stringify(rebackData), 3);
             layer.closeAll();
-            if (rebackData.status == true) {
+            if (rebackData.status) {
                 window.location.reload();
             } else {
                 if (rebackData.message != undefined && rebackData.message != "") {
@@ -604,28 +609,25 @@
 
     //购买商品
     $(document).on("submit", "#payForm", function(e) {
-        var manageUid = "628";
-        if (manageUid == "204" && orderInfo.amount >= 5000) {
-            $(this).find("#payAliweb input[name='paytype']").prop("checked", "checked");
-        }
-        var urlData = $(this).serialize();
-
         var url = $(this).prop("action");
         var dataPay = $(this).find("input[name='paytype']:checked").val();
         var goodsId = '';
-        if (orderInfo.hasOwnProperty('goodsId') && orderInfo.goodsId != undefined) {
+        if (orderInfo.hasOwnProperty('goodsId') && orderInfo.goodsId) {
             goodsId = orderInfo.goodsId;
         }
-        url += "?" + urlData + "&productCode=52391587712537540955268025903879&channelCode=001&openid=";
-        var reqData = orderInfo;
-        ajaxRequestData(url, reqData, function(rebackData) {
+
+        ajaxRequestData(url, orderInfo, function(rebackData) {
             setLog(JSON.stringify(rebackData), 3);
-            if (rebackData.data.status == true && (rebackData.data.data.payParams != "" && rebackData.data.data.hasOwnProperty("payParams"))) {
+            
+            if (rebackData.status) {
                 layer.closeAll();
                 if (dataPay == 10) {
-                    if (isiPhone || isiPad || isAndroid || isWhale) {
+
+                    if (isiPhone || isiPad || isAndroid ) {
+                        //微信内部支付
                         if (isWeixin) {
-                            var payBackData = rebackData.data.data.payParams;
+                            //{status:true,payParams:{wxAppId:'',timeStamp:'',nonceStr:'',prepay_id:'',paySign:''}}
+                            var payBackData = rebackData.payParams;
 
                             if (typeof WeixinJSBridge == "undefined") {
                                 if (document.addEventListener) {
@@ -639,11 +641,11 @@
                             }
                         } else {
                             var htmlCont = "<div class='wxpay-box'><div class='wxpay-top'><img src='' /></div></div>";
-                            $("#wxpay-con").find(".pay-now").prop("href", rebackData.data.data.payParams);
+                            $("#wxpay-con").find(".pay-now").prop("href", rebackData.payParams);
                             openDialog(document.getElementById("wxpay-con"), "wxpay");
                         }
                     } else {
-                        $("#payFrame iframe").prop("src", rebackData.data.data.payParams);
+                        $("#payFrame iframe").prop("src", rebackData.payParams);
                         globalPageIndex = layer.open({
                             type: 1,
                             content: $("#payFrame").html(),
@@ -654,19 +656,19 @@
                         });
                     }
 
-                    if (callbackFun != null) {
+                    if (callbackFun) {
                         callbackFun(rebackData);
                     }
                 } else if (dataPay == 8) {
                     //苹果内购
                     var payObject = new Object();
                     payObject.orderNo = rebackData.data.data.orderNo;
-                    payObject.uid = "66034315";
+                    payObject.uid =USER.productCode;
                     if (goodsId == '') {
                         goodsId = '108zuanshi';
                     }
                     payObject.goodsId = goodsId;
-                    payObject.productCode = "52391587712537540955268025903879";
+                    payObject.productCode = USER.productCode;
                     var sendString = JSON.stringify(payObject);
                     window.webkit.messageHandlers.appstoreBuy.postMessage({
                         body: sendString
@@ -733,7 +735,7 @@
         var url = $(this).attr("action");
         var username = $(this).find("input[name='username']").val();
         var pwd = $(this).find("input[name='password']").val();
-        urlData += "&productCode=52391587712537540955268025903879";
+
         if (username.length < 4) {
             layer.open({
                 content: "用户名格式错误",
@@ -751,21 +753,16 @@
 
         ajaxRequestData(url, urlData, function(rebackData) {
             setLog(JSON.stringify(rebackData), 3);
-            if (callbackFun != null) {
+            if (callbackFun) {
                 callbackFun(rebackData);
             }
             if (rebackData.status == true) {
                 window.location.reload();
             } else {
-                if (rebackData.message != "" && rebackData.message != undefined) {
-                    layer.open({
-                        content: rebackData.message,
-                        btn: "确定"
-                    });
-                    return false;
-                } else {
-                    layer.closeAll();
-                }
+                layer.open({
+                    content: rebackData.message,
+                    btn: "确定"
+                });
             }
         });
         return false;
@@ -777,7 +774,6 @@
         var url = $(this).attr("action");
         var username = $(this).find("input[name='username']").val();
         var pwd = $(this).find("input[name='password']").val();
-        urlData += "&productCode=52391587712537540955268025903879&channelCode=001";
         var checkUName = checkUname(username);
         if (checkUName.status == false) {
             layer.open({
@@ -910,48 +906,26 @@
     //广告相关事件 登录事件
 
     $(document).ready(function() {
-        triggerAd_login();
-        triggerAd_active();
+        triggerAd('ad_login');
+        triggerAd('ad_active');
     })
-
-    function triggerAd_login() {
-        if (navigator.userAgent == 'WhaleBrowser') {
-            var eventObject = new Object();
-            eventObject.action = "ad_login";
-            var dataObject = new Object();
-            dataObject.uid = '66034315';
-            dataObject.username = 'junyu05';
-            eventObject.data = dataObject;
-            var sendString = JSON.stringify(eventObject);
-            window.webkit.messageHandlers.eventComplete.postMessage(sendString);
-        }
-    }
-
+    //角色信息上传
     function triggerAd_updateRole(roleObject) {
-        if (navigator.userAgent == 'WhaleBrowser') {
-            var eventObject = new Object();
-            eventObject.action = "ad_updateRole";
-            try {
-                eventObject.data = JSON.parse(roleObject);
-            } catch (e) {
-            }
-
-            var sendString = JSON.stringify(eventObject);
-            window.webkit.messageHandlers.eventComplete.postMessage(sendString);
+        var eventObject = new Object();
+        eventObject.action = "ad_updateRole";
+        try {
+            eventObject.data = JSON.parse(roleObject);
+        } catch (e) {
         }
+        console.log(eventObject)
     }
 
-    function triggerAd_active() {
-        if (navigator.userAgent == 'WhaleBrowser') {
-            var eventObject = new Object();
-            eventObject.action = "ad_active";
-            var dataObject = new Object();
-            dataObject.uid = '66034315';
-            dataObject.username = 'junyu05';
-            dataObject.roleId = dataObject.uid;
-            eventObject.data = dataObject;
-            var sendString = JSON.stringify(eventObject);
-            window.webkit.messageHandlers.eventComplete.postMessage(sendString);
+    //Ad统计
+    function triggerAd(type) {
+        var eventObject ={
+            action :type "ad_active",
+            uid : USER.uid,
+            username : USER.username
         }
     }
 </script>
