@@ -33,15 +33,26 @@
             .layui-m-layermain, .layui-m-layershade {
                 position: absolute;
             }
+            .test input{
+                padding: 5px 15px;
+                margin: 5px;
+                background-color: #fff;
+            }
         </style>
     </head>
     <body>
         <iframe id="gameFrame" class="gameFrame" height="100%" width="100%" frameborder="no" scrolling="no" allowtransparency="yes" src="./channel.html"></iframe>
+        <!-- 测试UI功能 -->
+        <div class="test">
+            <h3 style="color: #fff;text-align: center;">UI功能测试</h3>
+            <input type="button" id='test-tips' value="通知提示" onclick="noteUserMsg({retMsg:'消息内容',closeTime:10})">
+            <input type="button" id='test-pay' value="支付">
+        </div>
         <!-- 消息通知框 -->
         <div id='userMsgTips' class='userMsgTips' style="display:none">
             <div class='msgbox'>
-                <img id="msg-avatar" src="/resource/images/defaultHead.png"/>
-                <div id="msg-con"></div>
+                <img class="msg-avatar" src=""/>
+                <div class="msg-con"></div>
             </div>
             <a href="javascript:;" class="closeLink" onclick='event.stopPropagation();$("#userMsgTips").css("top","-70px").hide()'></a>
         </div>
@@ -66,13 +77,13 @@
                                 <em></em>
                                 <img src="/resource/images/pay_type_wechat.png" alt=""/>
                                 <span class="pay-type-name">微信支付</span>
-                                <input type="radio" name="paytype" class="paytype-radio" value="10" checked="checked"/>
+                                <input type="radio" name="paytype" class="paytype-radio" value="wx" checked="checked"/>
                             </a>
                             <a id="payAliweb" href="javascript:;">
                                 <em></em>
                                 <img src="/resource/images/pay_type_alipay.png" alt=""/>
                                 <span class="pay-type-name">支付宝网页</span>
-                                <input type="radio" name="paytype" class="paytype-radio" value="2"/>
+                                <input type="radio" name="paytype" class="paytype-radio" value="alipay"/>
                             </a>
                         </div>
                     </div>
@@ -88,6 +99,17 @@
                 <iframe class="gameFrame" id="payFrameDialog" height="480px" width="100%" frameborder="no" scrolling="no" allowtransparency="yes" src=""></iframe>
             </div>
         </div>
+        <!-- 微信支付操作选择 -->
+        <div id="wxpay-con" style="display: none;">
+            <div class="wxpay-box">
+                <div class="wxpay-top">
+                    <span>微信支付操作提示</span>
+                </div>
+                <div class="wxpay-choose">
+                    <a class="pay-now" href="javascript:;" onClick="layer.closeAll();payAfterLoginViews(null);">点击打开微信支付</a>
+                </div>
+            </div>
+        </div>        
         <!-- 登录界面 -->
         <div id="loginBox" style="display: none;">
             <div class="login-box-ui">
@@ -95,11 +117,9 @@
                     <img class="closeImage" src="/resource/images/controls_close.png" alt=""/>
                 </a>
                 <form id="loginForm" action="/apiH5/ajaxLoginDo">
-                    <div style="height: 6%;clear: both;"></div>
                     <div class="login-top-logo">
                         <span>用户登录</span>
                     </div>
-                    <div style="height: 3%;clear: both;"></div>
                     <div class="login-contain-form">
                         <div class="login-form-item">
                             <em class="interface-icon-uname "></em>
@@ -119,7 +139,7 @@
                         </div>
                     </div>
                     <div class="login-form-item">
-                        <ul class="guest-whale-op">
+                        <ul class="guest-op">
                             <li class="oneblock">
                                 <a href="javascript:;" onClick="showRegBox('regBoxAcount');">没有账号？立即注册</a>
                             </li>
@@ -135,11 +155,9 @@
                     <img class="closeImage" src="/resource/images/controls_close.png" alt=""/>
                 </a>
                 <form id="regAcountForm" action="/apiH5/regUserDo">
-                    <div style="height: 6%;clear: both;"></div>
                     <div class="login-top-logo">
                         <span>账号注册</span>
                     </div>
-                    <div style="height: 3%;clear: both;"></div>
                     <div class="login-contain-form">
                         <div class="login-form-item">
                             <em class="interface-icon-uname "></em>
@@ -169,7 +187,6 @@
                     <img class="closeImage" src="/resource/images/controls_close.png" alt=""/>
                 </a>
                 <div class="login-contain-form">
-                    <div style="height: 13px;clear: both;"></div>
                     <div class="login-top-logo">
                         <span>用户注册协议</span>
                     </div>
@@ -200,17 +217,6 @@
                 </div>
             </div>
         </div>
-        <!-- 微信支付操作选择 -->
-        <div id="wxpay-con" style="display: none;">
-            <div class="wxpay-box">
-                <div class="wxpay-top">
-                    <span>微信支付操作提示</span>
-                </div>
-                <div class="wxpay-choose">
-                    <a class="pay-now" href="javascript:;" onClick="layer.closeAll();payAfterLoginViews(null);">点击打开微信支付</a>
-                </div>
-            </div>
-        </div>
         <!-- 浮标开始 -->
         <div class="assistive-wrap" id="assistive-wrap">
             <div class="assistive-touch ">
@@ -232,7 +238,6 @@
         <!-- 账户信息界面弹框 -->
         <div id="serviceBox" style="display: none;">
             <div class="login-box-ui">
-                <div style="height: 8%;clear: both;"></div>
                 <div class="ucenter-avatar-box">
                     <div class="avatar-l navar-box">
                         <em></em>
@@ -243,6 +248,10 @@
                     </div>
                 </div>
                 <div class="ucenter-item">
+                    <a href="javascript:;" class="clickButton" onclick="layer.close(globalLayerIndex);showLoginViews(null);">
+                        <em class="login-em"></em>
+                        立即登录
+                    </a>
                     <a href="javascript:;" class="clickButton" onClick="showRegBox('editInfoBox');">
                         <em class="pwd-em"></em>
                         修改密码
@@ -256,7 +265,6 @@
                         隐藏浮标
                     </a>
                 </div>
-                <div style="height: 3%;clear: both;">&nbsp;</div>
             </div>
         </div>
         <!-- 客服信息界面弹框 -->
@@ -286,11 +294,9 @@
                     <img class="closeImage" src="/resource/images/controls_close.png" alt=""/>
                 </a>
                 <form id="editInfoForm" action="/apiH5/ajaxModifyInfoDo">
-                    <div style="height: 6%;clear: both;"></div>
                     <div class="login-top-logo">
                         <span>密码修改</span>
                     </div>
-                    <div style="height: 3%;clear: both;"></div>
                     <div class="login-contain-form">
                         <div class="login-form-item">
                             <em class="interface-icon-uname "></em>
@@ -399,11 +405,7 @@
     var isAndroid = ua.indexOf("android") != -1;
     var isUC = ua.indexOf('ucbrowser') != -1;
     if (isWeixin) {
-        $("#payAliweb").hide();
-        $("#payWeixin").hide();
-        $(".payButton").html('启动微信支付');
-    } else if (isUC && isAndroid) {
-        $("#payAliweb").hide();
+        $("#payAliweb").remove();
     }
 
     //cp支付参数
@@ -414,25 +416,17 @@
 
     //调用支付界面
     function showPayViews(orderInfoObj, callback) {
-
         orderInfo = orderInfoObj;
         callbackFun = callback;
         var payViewObj = $("#payViews");
         payViewObj.find(".goodsname").html(orderInfoObj.subject);
         payViewObj.find(".goodsprice").html("¥" + orderInfoObj.amount);
 
-        if ($("#payAliweb").length > 0) {
-            $("#payAliweb").show().removeClass('selected');
-        }
-        if ($("#payWeixin").length > 0) {
-            $("#payWeixin").show().addClass("selected");
-        }
-
         var useAppPay = '0';
         if (useAppPay == "1") {
             $("#payForm").trigger("submit");
         } else {
-            openDialog(document.getElementById("payViews"), "wsdk-payViews");
+            openDialog(document.getElementById("payViews"), "payViews");
             $("#pay-type-items a").click(function(e) {
                 $(this).addClass("selected").siblings("a").removeClass("selected");
                 $(this).find("input[name='paytype']").prop("checked", "checked");
@@ -501,7 +495,7 @@
     //调用登录界面
     function showLoginViews(callback) {
         callbackFun = callback;
-        openDialog(document.getElementById("loginBox"), "wsdk-login-dialog");
+        openDialog(document.getElementById("loginBox"), "login-dialog");
     }
 
     //支付之后调用登录界面
@@ -530,7 +524,7 @@
             if (rebackData.status) {
                 window.location.reload();
             } else {
-                if (rebackData.message != undefined && rebackData.message != "") {
+                if (rebackData.message) {
                     layer.open({
                         content: rebackData.message,
                         btn: "确定"
@@ -544,19 +538,17 @@
     //调用修改密码/注册账号界面
     function showRegBox(regboxId) {
         layer.close(globalLayerIndex);
-        openDialog(document.getElementById(regboxId), "wsdk-" + regboxId + "-dialog");
+        openDialog(document.getElementById(regboxId), regboxId + "-dialog");
     }
 
     //调用用户协议界面
     function showAgreementBox(regboxId) {
         var objd = document.getElementById(regboxId);
-        var hengCss = 'border: none; -webkit-animation-duration: .5s; animation-duration: .5s;border-radius:4px;-webkit-border-radius:4px;';
         var html = objd.innerHTML;
-        var classname = "wsdk-" + regboxId + "-dialog";
+        var classname = regboxId + "-dialog";
         var globalLayerSubIndex = layer.open({
             type: 1,
             content: html,
-            style: hengCss,
             shadeClose: false,
             className: classname
         });
@@ -579,67 +571,71 @@
 
     //用户提示信息框
     function noteUserMsg(tipsObj) {
-        var replyContent = "您收到一条信息";
-        if (tipsObj.retMsg && tipsObj.retMsg != "") {
-            var replyContent = tipsObj.retMsg;
-        }
-        var avatarUrl = "";
-        if (tipsObj.avatarUrl && tipsObj.avatarUrl != "") {
-            var avatarUrl = tipsObj.avatarUrl;
-        }
-        var leftTime = 10;
-        if (tipsObj.closeTime) {
-            var leftTime = tipsObj.closeTime;
-        }
+        //{retMsg:'消息内容',avatarUrl:'头像url',closeTime:'关闭时间'}
+        var replyContent = tipsObj.retMsg || "您收到一条信息";
+        var avatarUrl = tipsObj.avatarUrl || "/resource/images/defaultHead.png";
+        var leftTime =tipsObj.closeTime || 10;
+        var el=$('#userMsgTips')
+        el.find(".msg-con").html(replyContent);
+        el.find(".msg-avatar").attr("src", avatarUrl);
 
-        $("#msg-con").html(replyContent);
-        if (avatarUrl != "") {
-            $("#msg-avatar").prop("scr", avatarUrl);
-        }
         setTimeout(function() {
             $("#userMsgTips").css("top", "-70px").hide();
         }, leftTime * 1000);
         $("#userMsgTips").css("top", "0px").show();
     }
-
+    
     //购买商品
     $(document).on("submit", "#payForm", function(e) {
         var url = $(this).prop("action");
         var dataPay = $(this).find("input[name='paytype']:checked").val();
-        var goodsId = '';
-        if (orderInfo.hasOwnProperty('goodsId') && orderInfo.goodsId) {
-            goodsId = orderInfo.goodsId;
-        }
+        var goodsId = orderInfo.goodsId||'';
 
         ajaxRequestData(url, orderInfo, function(rebackData) {
             setLog(JSON.stringify(rebackData), 3);
             
             if (rebackData.status) {
                 layer.closeAll();
-                if (dataPay == 10) {
+                switch(dataPay) {
+                    case 'wx':
+                        if (isiPhone || isiPad || isAndroid ) {
+                            //在微信内支付
+                            if (isWeixin) {
+                                //{status:true,payParams:{wxAppId:'',timeStamp:'',nonceStr:'',prepay_id:'',paySign:''}}
+                                var payBackData = rebackData.payParams;
 
-                    if (isiPhone || isiPad || isAndroid ) {
-                        //微信内部支付
-                        if (isWeixin) {
-                            //{status:true,payParams:{wxAppId:'',timeStamp:'',nonceStr:'',prepay_id:'',paySign:''}}
-                            var payBackData = rebackData.payParams;
-
-                            if (typeof WeixinJSBridge == "undefined") {
-                                if (document.addEventListener) {
-                                    document.addEventListener('WeixinJSBridgeReady', wxJsPay(payBackData), false);
-                                } else if (document.attachEvent) {
-                                    document.attachEvent('WeixinJSBridgeReady', wxJsPay(payBackData));
-                                    document.attachEvent('onWeixinJSBridgeReady', wxJsPay(payBackData));
+                                if (typeof WeixinJSBridge == "undefined") {
+                                    if (document.addEventListener) {
+                                        document.addEventListener('WeixinJSBridgeReady', wxJsPay(payBackData), false);
+                                    } else if (document.attachEvent) {
+                                        document.attachEvent('WeixinJSBridgeReady', wxJsPay(payBackData));
+                                        document.attachEvent('onWeixinJSBridgeReady', wxJsPay(payBackData));
+                                    }
+                                } else {
+                                    wxJsPay(payBackData);
                                 }
                             } else {
-                                wxJsPay(payBackData);
+                                //浏览器选择微信支付
+                                var htmlCont = "<div class='wxpay-box'><div class='wxpay-top'><img src='' /></div></div>";
+                                $("#wxpay-con").find(".pay-now").prop("href", rebackData.payParams);
+                                openDialog(document.getElementById("wxpay-con"), "wxpay");
                             }
                         } else {
-                            var htmlCont = "<div class='wxpay-box'><div class='wxpay-top'><img src='' /></div></div>";
-                            $("#wxpay-con").find(".pay-now").prop("href", rebackData.payParams);
-                            openDialog(document.getElementById("wxpay-con"), "wxpay");
+                            $("#payFrame iframe").prop("src", rebackData.payParams);
+                            globalPageIndex = layer.open({
+                                type: 1,
+                                content: $("#payFrame").html(),
+                                anim: 'up',
+                                className: 'payFrameDialog',
+                                shadeClose: false,
+                                style: 'height:300px;width:300px; text-align:center;'
+                            });
                         }
-                    } else {
+                        if (callbackFun) {
+                            callbackFun(rebackData);
+                        }
+                        break;
+                    case 'alipay':
                         $("#payFrame iframe").prop("src", rebackData.payParams);
                         globalPageIndex = layer.open({
                             type: 1,
@@ -647,49 +643,20 @@
                             anim: 'up',
                             className: 'payFrameDialog',
                             shadeClose: false,
-                            style: 'height:300px;width:300px; border: none; -webkit-animation-duration: .5s; animation-duration: .5s;text-align:center;'
-                        });
-                    }
-
-                    if (callbackFun) {
-                        callbackFun(rebackData);
-                    }
-                } else if (dataPay == 8) {
-                    //苹果内购
-                    var payObject = new Object();
-                    payObject.orderNo = rebackData.data.data.orderNo;
-                    payObject.uid =USER.productCode;
-                    if (goodsId == '') {
-                        goodsId = '108zuanshi';
-                    }
-                    payObject.goodsId = goodsId;
-                    payObject.productCode = USER.productCode;
-                    var sendString = JSON.stringify(payObject);
-                    window.webkit.messageHandlers.appstoreBuy.postMessage({
-                        body: sendString
-                    });
-
-                } else {
-                    $("#payFrame iframe").prop("src", rebackData.data.data.payParams);
-                    globalPageIndex = layer.open({
-                        type: 1,
-                        content: $("#payFrame").html(),
-                        anim: 'up',
-                        className: 'payFrameDialog',
-                        shadeClose: false,
-                        style: 'height:480px; width:90%; border: none; -webkit-animation-duration: .5s; animation-duration: .5s;'
-                    });
+                            style: 'height:480px; width:90%;'
+                        });                        
+                        break;
                 }
             } else {
-                if (callbackFun != null) {
+                if (callbackFun) {
                     callbackFun(rebackData);
                     layer.closeAll();
                 }
-                var errorMsg = "创建支付链接失败";
-                if (rebackData.data.message != undefined && rebackData.data.message != "") {
-                    errorMsg = rebackData.data.message;
-                }
-                alert(errorMsg);
+                var errorMsg =rebackData.data.message || "创建支付链接失败";
+                    layer.open({
+                        content: errorMsg,
+                        btn: "确定"
+                    });
             }
         });
         return false;
@@ -904,6 +871,7 @@
         triggerAd('ad_login');
         triggerAd('ad_active');
     })
+    
     //角色信息上传
     function triggerAd_updateRole(roleObject) {
         var eventObject = new Object();

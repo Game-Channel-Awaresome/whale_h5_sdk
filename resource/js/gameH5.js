@@ -63,10 +63,6 @@ var skymoonsLib = {
 		window.parent.postMessage(JSON.stringify(messageObject),'*');
 	},
 	logOut:function(callback){
-		if(this.gameKey == null){
-			setLog('SDK未完成初始化便调用支付',1);
-			return false;
-		}
 		var messageObject = new Object();
 		messageObject.func = 'Event_Channel_LogOut';
 		window.parent.postMessage(JSON.stringify(messageObject),'*');

@@ -2,12 +2,10 @@ var globalLayerIndex;
 var globalPageIndex;
 
 function openDialog(objd,classname){
-	var hengCss='border: none; -webkit-animation-duration: .5s; animation-duration: .5s;border-radius:4px;-webkit-border-radius:4px;';
 	var html=objd.innerHTML;
 	globalLayerIndex=layer.open({
 		type:1,
 		content:html,
-		style:hengCss,
 		shadeClose:false,
 		className: classname
 	});

@@ -28,13 +28,13 @@
 	vertical-align:middle;
 	text-align:center
 }
+
 .layui-m-layerchild {
 	position:relative;
 	display:inline-block;
 	text-align:left;
 	background-color:#fff;
 	font-size:14px;
-	border-radius:5px;
 	box-shadow:0 0 8px rgba(0,0,0,.1);
 	pointer-events:auto;
 	-webkit-overflow-scrolling:touch;

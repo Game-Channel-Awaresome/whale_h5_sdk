@@ -21,7 +21,7 @@
     <style>
     body {
         -ms-touch-action: none;
-        background: #000;
+        background: #4993e8;
         padding: 0;
         border: 0;
         margin: 0;
@@ -38,6 +38,7 @@
         /* Internet Explorer/Edge */
         user-select: none;
         /* Non-prefixed version, currently not supported by any browser */
+        border-bottom: 3px solid #00a1ed;
     }
     
     body input {
@@ -47,29 +48,32 @@
     }
     </style>
 
-    <body style="text-align: right;">
-        <P>
-            <input type="button" value="登录" id="login">
-        </P>
-        <P>
-            <input type="button" value="初始化" id="init">
-        </P>
-        <P>
-            <input type="button" value="调起支付" id="pay">
-        </P>
-        <P>
-            <input type="button" value="调起浮标" id="menu">
-        </P>
-        <P>
-            <input type="button" value="获取用户信息" id="userInfo">
-        </P>
-        <P>
-            <input type="button" value="提交角色信息" id="role">
-        </P>
+    <body>
+        <h3 style="color: #fff;text-align: center;">CP接口测试</h3>
+    
+        <input type="button" value="初始化" id="init">
+
+        <input type="button" value="登录" id="login">
+    
+        <input type="button" value="登出" id="logout">  
+
+        <input type="button" value="调起支付" id="pay">
+    
+        <input type="button" value="调起浮标" id="menu">
+    
+        <input type="button" value="获取用户信息" id="userInfo">
+            
+        <input type="button" value="提交角色信息" id="role">
+        
         <script type="text/javascript">
         $('#login').click(function() {
             SDK.login(function(params) {
                 console.log(params)
+            })
+        })
+        $('#logout').click(function(){
+            SDK.logout(function(res){
+                console.log(res)
             })
         })
         $('#init').click(function() {
