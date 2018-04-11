@@ -345,12 +345,9 @@ li {
 
 .payViews {
     width: 90%;
-    height: 360px;
+    height: 340px;
 }
 
-.payViews {
-    height: 100%;
-}
 
 .payTitle {
     text-align: center;

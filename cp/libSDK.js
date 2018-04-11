@@ -113,6 +113,7 @@ function getSDKOrderData(orderData, callback) {
     var rebackObj = new Object();
     rebackObj.status = false;
     rebackObj.orderNo = '';
+    return callback({status:true,orderNo:'414635483213254'})
     $.ajax({
         type: "POST",
         url: './ajaxGetOrderNo',

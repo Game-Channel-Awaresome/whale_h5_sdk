@@ -42,12 +42,6 @@
     </head>
     <body>
         <iframe id="gameFrame" class="gameFrame" height="100%" width="100%" frameborder="no" scrolling="no" allowtransparency="yes" src="./channel.html"></iframe>
-        <!-- 测试UI功能 -->
-        <div class="test">
-            <h3 style="color: #fff;text-align: center;">UI功能测试</h3>
-            <input type="button" id='test-tips' value="通知提示" onclick="noteUserMsg({retMsg:'消息内容',closeTime:10})">
-            <input type="button" id='test-pay' value="支付" onclick="">
-        </div>
         <!-- 消息通知框 -->
         <div class='userMsgTips' style="display:none">
             <div class='msgbox'>
@@ -62,33 +56,31 @@
                 <img class="closeImage" src="/resource/images/controls_close.png" alt=""/>
             </a>
             <form id="payForm" action="/ajaxPayDo">
-                <div class="payViews">
-                    <div class="payTitle">支付中心</div>
-                    <div class="pay-goods-name">
-                        <span class="goodsprice"></span>
-                        <span>商品：</span>
-                        <span class="goodsname"></span>
+                <div class="payTitle">支付中心</div>
+                <div class="pay-goods-name">
+                    <span class="goodsprice"></span>
+                    <span>商品：</span>
+                    <span class="goodsname"></span>
+                </div>
+                <h4 class="pay-type-title">选择支付方式</h4>
+                <div class="pay-type-box">
+                    <div class="pay-type-items" id="pay-type-items">
+                        <a id="payWeixin" href="javascript:;" class="selected">
+                            <em></em>
+                            <img src="/resource/images/pay_type_wechat.png" alt=""/>
+                            <span class="pay-type-name">微信支付</span>
+                            <input type="radio" name="paytype" class="paytype-radio" value="wx" checked="checked"/>
+                        </a>
+                        <a id="payAliweb" href="javascript:;">
+                            <em></em>
+                            <img src="/resource/images/pay_type_alipay.png" alt=""/>
+                            <span class="pay-type-name">支付宝网页</span>
+                            <input type="radio" name="paytype" class="paytype-radio" value="alipay"/>
+                        </a>
                     </div>
-                    <h4 class="pay-type-title">选择支付方式</h4>
-                    <div class="pay-type-box">
-                        <div class="pay-type-items" id="pay-type-items">
-                            <a id="payWeixin" href="javascript:;" class="selected">
-                                <em></em>
-                                <img src="/resource/images/pay_type_wechat.png" alt=""/>
-                                <span class="pay-type-name">微信支付</span>
-                                <input type="radio" name="paytype" class="paytype-radio" value="wx" checked="checked"/>
-                            </a>
-                            <a id="payAliweb" href="javascript:;">
-                                <em></em>
-                                <img src="/resource/images/pay_type_alipay.png" alt=""/>
-                                <span class="pay-type-name">支付宝网页</span>
-                                <input type="radio" name="paytype" class="paytype-radio" value="alipay"/>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="pay-type-submit tc">
-                        <button type="submit" class="form-item-submit payButton">立即支付</button>
-                    </div>
+                </div>
+                <div class="pay-type-submit tc">
+                    <button type="submit" class="form-item-submit payButton">立即支付</button>
                 </div>
             </form>
             <div id="payFrame" style="display: none;">

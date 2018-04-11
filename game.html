@@ -30,15 +30,8 @@
         /* iOS Safari */
         -webkit-user-select: none;
         /* Chrome/Safari/Opera */
-        -khtml-user-select: none;
-        /* Konqueror */
-        -moz-user-select: none;
-        /* Firefox */
-        -ms-user-select: none;
-        /* Internet Explorer/Edge */
         user-select: none;
         /* Non-prefixed version, currently not supported by any browser */
-        border-bottom: 3px solid #00a1ed;
     }
     
     body input {
@@ -48,7 +41,7 @@
     }
     </style>
 
-    <body>
+    <body style="text-align: center;">
         <h3 style="color: #fff;text-align: center;">CP接口测试</h3>
     
         <input type="button" value="初始化" id="init">
@@ -118,6 +111,9 @@
                 friendlist: ''
             }
             SDK.uploadGameRoleInfo(JSON.stringify(roleInfo))
+        })
+        $('#tips').click(function(){
+            //SDK.
         })
         </script>
     </body>
