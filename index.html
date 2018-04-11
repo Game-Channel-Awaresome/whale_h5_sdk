@@ -46,15 +46,15 @@
         <div class="test">
             <h3 style="color: #fff;text-align: center;">UI功能测试</h3>
             <input type="button" id='test-tips' value="通知提示" onclick="noteUserMsg({retMsg:'消息内容',closeTime:10})">
-            <input type="button" id='test-pay' value="支付">
+            <input type="button" id='test-pay' value="支付" onclick="">
         </div>
         <!-- 消息通知框 -->
-        <div id='userMsgTips' class='userMsgTips' style="display:none">
+        <div class='userMsgTips' style="display:none">
             <div class='msgbox'>
                 <img class="msg-avatar" src=""/>
                 <div class="msg-con"></div>
             </div>
-            <a href="javascript:;" class="closeLink" onclick='event.stopPropagation();$("#userMsgTips").css("top","-70px").hide()'></a>
+            <a href="javascript:;" class="closeLink" onclick='event.stopPropagation();$(".userMsgTips").css("top","-70px").hide()'></a>
         </div>
         <!-- 支付页面 -->
         <div id="payViews" style="display: none;">
@@ -64,7 +64,6 @@
             <form id="payForm" action="/ajaxPayDo">
                 <div class="payViews">
                     <div class="payTitle">支付中心</div>
-                    <div style="height: 1%;"></div>
                     <div class="pay-goods-name">
                         <span class="goodsprice"></span>
                         <span>商品：</span>
@@ -106,7 +105,7 @@
                     <span>微信支付操作提示</span>
                 </div>
                 <div class="wxpay-choose">
-                    <a class="pay-now" href="javascript:;" onClick="layer.closeAll();payAfterLoginViews(null);">点击打开微信支付</a>
+                    <a class="pay-now" href="javascript:;" onClick="layer.closeAll();">点击打开微信支付</a>
                 </div>
             </div>
         </div>        
@@ -122,7 +121,7 @@
                     </div>
                     <div class="login-contain-form">
                         <div class="login-form-item">
-                            <em class="interface-icon-uname "></em>
+                            <em class="interface-icon-uname"></em>
                             <input type="text" placeholder="请输入您的账号" autocomplete="off" id="ssssss" class="form-item-input" name="username"/>
                         </div>
                         <div class="form-line"></div>
@@ -200,20 +199,15 @@
                 <a href="javascript:void(0)" class="box-close">
                     <img class="closeImage" src="/resource/images/controls_close.png" alt=""/>
                 </a>
-                <div style="height: 6%;clear: both;"></div>
                 <div class="login-contain-form">
                     <div class="login-form-item">
-                        <div style="height: 1%;clear: both;">&nbsp;</div>
                         <h4 class="warning-tips-tit">
                             <img src="/resource/images/help.png" alt=""/>
                         </h4>
-                        <div style="height: 10px;clear: both;">&nbsp;</div>
                         <p class="warning-tips">
-                            账号注册用户找回密码请联系<strong style="font-weight: 600;">游戏客服</strong>
-                            。
+                            账号注册用户找回密码请联系<strong style="font-weight: 600;">游戏客服</strong>！
                         </p>
                     </div>
-                    <div style="height: 3%;clear: both;">&nbsp;</div>
                 </div>
             </div>
         </div>
@@ -256,6 +250,10 @@
                         <em class="pwd-em"></em>
                         修改密码
                     </a>
+                    <a href="javascript:;" class="clickButton" onClick="showCheckRealNameViews();">
+                        <em class="realname-em"></em>
+                        实名认证
+                    </a>
                     <a href="javascript:;" class="clickButton" id="onlineService" onClick="openOnlineService(this,1);">
                         <em class="service-em"></em>
                         在线客服
@@ -267,24 +265,37 @@
                 </div>
             </div>
         </div>
-        <!-- 客服信息界面弹框 -->
-        <div id="serviceInfoBox" style="display: none;">
+        <!--实名认证页面-->
+        <div id="checkRealNameBox" style="display: none;">
             <div class="login-box-ui">
                 <a href="javascript:void(0)" class="box-close">
                     <img class="closeImage" src="/resource/images/controls_close.png" alt=""/>
                 </a>
-                <div style="height: 6%;clear: both;"></div>
-                <div class="login-contain-form">
-                    <div class="login-form-item">
-                        <div style="height: 1%;clear: both;">&nbsp;</div>
-                        <h4 class="warning-tips-tit">
-                            <img src="/resource/images/help.png" alt=""/>
-                        </h4>
-                        <div style="height: 10px;clear: both;">&nbsp;</div>
-                        <p class="warning-tips"></p>
+                <form id="realNameForm" action="/realnameDo">
+                    <div class="login-top-logo">
+                        <span>实名认证</span>
                     </div>
-                    <div style="height: 3%;clear: both;">&nbsp;</div>
-                </div>
+                    <div class="login-contain-form">
+                        <p>
+                            您好，根据文化部<span class="f_red">《互联网文化管理暂行规定》</span>
+                            和<span class="f_red">《网络游戏管理暂行办法》</span>
+                            对于移动网络市场的相关规定及要求，游戏用户需要登记如下个人信息：
+                        </p>
+                        <div class="login-form-item">
+                            <em class="interface-icon-uname "></em>
+                            <input type="text" placeholder="请输入您的真实姓名" autocomplete="off" class="form-item-input" name="realname"/>
+                        </div>
+                        <div class="form-line"></div>
+                        <div class="login-form-item">
+                            <em class="interface-icon-idcard "></em>
+                            <input type="text" placeholder="请输入您的身份证号" autocomplete="off" class="form-item-input" name="idcard"/>
+                        </div>
+                        <div class="form-line"></div>
+                        <div class="login-form-item tc">
+                            <button type="submit" id="" class="form-item-submit">提交</button>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
         <!--修改密码界面-->
@@ -331,71 +342,6 @@
         "productCode": "52391587712537540955268025903879",
         "channelCode": "001"
     }
-    //浮标悬浮球
-    var assistiveLeft, assistiveRight, timerid;
-
-    function stickEdge(el) {
-        var left = parseInt($(el).css("left")) || 0
-          , width = parseInt(el.offsetWidth) || 0
-          , windowWith = (document.documentElement || document.body).offsetWidth;
-        if (left > (windowWith - width) / 2) {
-            left = windowWith - width - 2;
-        } else {
-            left = 1;
-        }
-        var ltop = parseInt($(el).css("top")) || 0
-          , windowHeight = $(window).height();
-        //var ptop=windowHeight*0.2 || 0;
-        var ptop = 0;
-        if (ltop + ptop <= 0) {
-            el.style.top = (0 - ptop) + "px";
-        } else if (ltop + ptop + 40 >= windowHeight) {
-            el.style.top = (windowHeight - ptop - 40) + "px";
-        }
-
-        el.style.transition = 'all .2s';
-        el.style['-webkit-transition'] = 'all .2s';
-        el.style.left = left + 'px';
-        timerid = setTimeout(function() {
-            el.style.transition = 'all .5s';
-            el.style['-webkit-transition'] = 'all .5s';
-            el.style.opacity = '.3';
-        }, 2000);
-    }
-    mTouch('.assistive-wrap').on('swipestart', function() {
-        clearTimeout(timerid);
-
-        this.style.transition = 'none';
-        this.style['-webkit-transition'] = 'none';
-        this.style.opacity = '1';
-        assistiveLeft = parseInt($(this).css("left")) || 0;
-        assistiveTop = parseInt($(this).css("top")) || 0;
-        return false;
-    }).on('swiping', function(e) {
-        this.style.left = assistiveLeft + e.mTouchEvent.moveX + 'px';
-        this.style.top = assistiveTop + e.mTouchEvent.moveY + 'px';
-        $(".menuList.assistive-menu").hide();
-    }).on('swipeend', function() {
-        stickEdge(this);
-        var assisL = parseInt($(this).css("left")) || 0;
-        var assisT = parseInt($(this).css("top")) || 0;
-        var docW = $(document).width();
-        var menuW = $(".menuList.assistive-menu .menulist-item").length;
-        if (assisL > docW / 2) {
-            menuListLeft = assisL - 70 - 40 * menuW + 40;
-            $(".menuList.assistive-menu").addClass("right").css({
-                left: menuListLeft + "px",
-                top: assisT + "px"
-            });
-        } else {
-            $(".menuList.assistive-menu").removeClass("right").css({
-                left: assisL + "px",
-                top: assisT + "px"
-            });
-        }
-    }).on("tap", function(e) {
-        $(".menuList.assistive-menu").toggle();
-    });
 
     //判断是否为微信浏览器
     var ua = navigator.userAgent.toLowerCase();
@@ -475,12 +421,17 @@
         layer.close(globalLayerIndex);
     }
 
+    //实名认证
+    function showCheckRealNameViews(){
+        openDialog(document.getElementById("checkRealNameBox"), "login-dialog");
+    }
+
     //隐藏客服页面
     function closeChat() {
         $("#chatFrame").hide();
     }
 
-    //调用账户信息界面
+    //账户信息界面
     function showServiceViews(callback) {
         callbackFun = callback;
         globalLayerIndex = layer.open({
@@ -492,21 +443,13 @@
         });
     }
 
-    //调用登录界面
+    //登录界面
     function showLoginViews(callback) {
         callbackFun = callback;
         openDialog(document.getElementById("loginBox"), "login-dialog");
     }
 
-    //支付之后调用登录界面
-    function payAfterLoginViews(callbackFunc) {
-        //特定产品不需游客支付再登录
-        if (!USER.isLogin) {
-            showLoginViews(callbackFunc);
-        }
-    }
-
-    //调用退出登录
+    //登出
     function showLogOutViews() {
         layer.open({
             type: 2,
@@ -535,13 +478,13 @@
         return false;
     }
 
-    //调用修改密码/注册账号界面
+    //修改密码/注册账号界面
     function showRegBox(regboxId) {
         layer.close(globalLayerIndex);
         openDialog(document.getElementById(regboxId), regboxId + "-dialog");
     }
 
-    //调用用户协议界面
+    //用户协议界面
     function showAgreementBox(regboxId) {
         var objd = document.getElementById(regboxId);
         var html = objd.innerHTML;
@@ -558,7 +501,7 @@
         })
     }
 
-    //调用显示、隐藏浮标菜单
+    //浮标菜单
     function showToggleModalMenu(menuStatus) {
         if (menuStatus == "OPEN") {
             $("#assistive-wrap").css("display", "block");
@@ -569,22 +512,51 @@
         }
     }
 
-    //用户提示信息框
+    //提示信息框
     function noteUserMsg(tipsObj) {
         //{retMsg:'消息内容',avatarUrl:'头像url',closeTime:'关闭时间'}
         var replyContent = tipsObj.retMsg || "您收到一条信息";
         var avatarUrl = tipsObj.avatarUrl || "/resource/images/defaultHead.png";
         var leftTime =tipsObj.closeTime || 10;
-        var el=$('#userMsgTips')
+        var el=$('.userMsgTips')
         el.find(".msg-con").html(replyContent);
         el.find(".msg-avatar").attr("src", avatarUrl);
 
         setTimeout(function() {
-            $("#userMsgTips").css("top", "-70px").hide();
+            $(".userMsgTips").css("top", "-70px").hide();
         }, leftTime * 1000);
-        $("#userMsgTips").css("top", "0px").show();
+        $(".userMsgTips").css("top", "0px").show();
     }
-    
+
+    //微信支付js
+    function wxJsPay(payBackData) {
+        WeixinJSBridge.invoke('getBrandWCPayRequest', {
+            "appId": payBackData.wxAppId,
+            "timeStamp": payBackData.timeStamp,
+            "nonceStr": payBackData.nonceStr,
+            "package": "prepay_id=" + payBackData.prepay_id,
+            "signType": "MD5",
+            "paySign": payBackData.paySign
+        }, function(res) {
+            if (res.err_msg == "get_brand_wcpay_request:ok") {
+                layer.open({
+                    content: "支付成功",
+                    btn: "确定"
+                });
+            } else if (res.err_msg == "get_brand_wcpay_request:cancel") {
+                layer.open({
+                    content: "支付取消",
+                    btn: "确定"
+                });
+            } else {
+                layer.open({
+                    content: "支付失败",
+                    btn: "确定"
+                });
+            }
+        });
+    }
+
     //购买商品
     $(document).on("submit", "#payForm", function(e) {
         var url = $(this).prop("action");
@@ -662,36 +634,7 @@
         return false;
     });
 
-    //微信支付js
-    function wxJsPay(payBackData) {
-        WeixinJSBridge.invoke('getBrandWCPayRequest', {
-            "appId": payBackData.wxAppId,
-            "timeStamp": payBackData.timeStamp,
-            "nonceStr": payBackData.nonceStr,
-            "package": "prepay_id=" + payBackData.prepay_id,
-            "signType": "MD5",
-            "paySign": payBackData.paySign
-        }, function(res) {
-            if (res.err_msg == "get_brand_wcpay_request:ok") {
-                layer.open({
-                    content: "支付成功",
-                    btn: "确定"
-                });
-            } else if (res.err_msg == "get_brand_wcpay_request:cancel") {
-                layer.open({
-                    content: "支付取消",
-                    btn: "确定"
-                });
-            } else {
-                layer.open({
-                    content: "支付失败",
-                    btn: "确定"
-                });
-            }
-        });
-    }
-
-    //用户登录
+    //登录
     $(document).on("submit", "#loginForm", function(e) {
         var urlData = $(this).serialize();
         var url = $(this).attr("action");
@@ -730,7 +673,7 @@
         return false;
     });
 
-    //用户账号注册
+    //账号注册
     $(document).on("submit", "#regAcountForm", function(e) {
         var urlData = $(this).serialize();
         var url = $(this).attr("action");
@@ -778,7 +721,7 @@
         return false;
     });
 
-    //用户密码修改
+    //密码修改
     $(document).on("submit", "#editInfoForm", function(e) {
         var urlData = $(this).serialize();
         var url = $(this).attr("action");
@@ -803,6 +746,56 @@
             if (rebackData.status == true) {
                 layer.open({
                     content: "密码修改成功，请重新登录！",
+                    btn: "确定",
+                    yes: function() {
+                        window.location.reload();
+                    }
+                });
+            } else {
+                if (rebackData.message != "" && rebackData.message != undefined) {
+                    layer.open({
+                        content: rebackData.message,
+                        btn: "确定"
+                    });
+                    return false;
+                } else {
+                    layer.closeAll();
+                }
+            }
+        });
+        return false;
+    });
+
+    //实名认证
+    $(document).on("submit", "#realNameForm", function(e) {
+        var urlData = $(this).serialize();
+        var url = $(this).attr("action");
+        var realname = $(this).find("input[name='realname']").val();
+        var idcard = $(this).find("input[name='idcard']").val();
+        if (!realname.length) {
+            layer.open({
+                content: "请填写真实姓名",
+                btn: "确定"
+            });
+            return false;
+        }
+
+        if (idcard.length != 15 && idcard.length != 18) {
+            layer.open({
+                content: "身份证号码格式错误",
+                btn: "确定"
+            });
+            return false;
+        }
+
+        ajaxRequestData(url, urlData, function(rebackData) {
+            setLog(JSON.stringify(rebackData), 3);
+            if (callbackFun) {
+                callbackFun(rebackData);
+            }
+            if (rebackData.status == true) {
+                layer.open({
+                    content: "您的账号实名信息已提交成功",
                     btn: "确定",
                     yes: function() {
                         window.location.reload();
@@ -866,12 +859,11 @@
     });
 
     //广告相关事件 登录事件
-
     $(document).ready(function() {
         triggerAd('ad_login');
         triggerAd('ad_active');
     })
-    
+
     //角色信息上传
     function triggerAd_updateRole(roleObject) {
         var eventObject = new Object();

@@ -1,4 +1,86 @@
-@charset "utf-8"; html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video,button {
+@charset "utf-8";
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video,
+button {
     margin: 0;
     padding: 0;
     font-style: normal;
@@ -8,7 +90,8 @@ a {
     text-decoration: none;
 }
 
-body,html {
+body,
+html {
     /*height: 100%;*/
     overflow: hidden;
     background: #4993e8;
@@ -19,11 +102,13 @@ table {
     border-spacing: 0;
 }
 
-fieldset,img {
+fieldset,
+img {
     border: 0;
 }
 
-ul,li {
+ul,
+li {
     list-style: none;
 }
 
@@ -35,27 +120,43 @@ ul,li {
     text-align: center;
 }
 
+.f_red {
+    color: red
+}
+
 .gameFrame {
     overflow: hidden;
     border: none;
 }
 
-.login-dialog .layui-m-layercont,.payViews .layui-m-layercont,.guestLogin-dialog .layui-m-layercont,.editInfoBox-dialog .layui-m-layercont,.ucenter-dialog .layui-m-layercont {
+.login-dialog .layui-m-layercont,
+.payViews .layui-m-layercont,
+.guestLogin-dialog .layui-m-layercont,
+.editInfoBox-dialog .layui-m-layercont,
+.ucenter-dialog .layui-m-layercont {
     height: 100%;
 }
 
-.login-dialog form,.payViews form,.guestLogin-dialog form,.editInfoBox-dialog form {
+.login-dialog form,
+.payViews form,
+.guestLogin-dialog form,
+.editInfoBox-dialog form {
     height: 100%;
 }
 
-.login-dialog,.guestLogin-dialog,.serviceInfoBox-dialog,.service-dialog {
+.login-dialog,
+.guestLogin-dialog,
+.serviceInfoBox-dialog,
+.service-dialog {
     width: 90%;
     height: 300px;
 }
-.editInfoBox-dialog{
-    width:90%;
-    height:260px;
+
+.editInfoBox-dialog {
+    width: 90%;
+    height: 260px;
 }
+
 .agreenMentBox-dialog {
     width: 90%;
     height: 320px;
@@ -121,7 +222,7 @@ ul,li {
 }
 
 .interface-icon-uname {
-    background: url(../images/Interface-85.png?v=20180328) no-repeat center center;
+    background: url(../images/Interface-85.png) no-repeat center center;
     background-size: cover;
     display: inline-block;
     width: 16px;
@@ -130,7 +231,7 @@ ul,li {
 }
 
 .interface-icon-pwd {
-    background: url(../images/Interface-89.png?v=20180328) no-repeat center center;
+    background: url(../images/Interface-89.png) no-repeat center center;
     background-size: cover;
     display: inline-block;
     width: 16px;
@@ -139,7 +240,7 @@ ul,li {
 }
 
 .interface-icon-phone {
-    background: url(../images/Interface-24.png?v=20180328) no-repeat center center;
+    background: url(../images/Interface-24.png) no-repeat center center;
     background-size: cover;
     display: inline-block;
     width: 16px;
@@ -148,7 +249,16 @@ ul,li {
 }
 
 .interface-icon-code {
-    background: url(../images/Interface-89.png?v=20180328) no-repeat center center;
+    background: url(../images/Interface-89.png) no-repeat center center;
+    background-size: cover;
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    vertical-align: middle;
+}
+
+.interface-icon-idcard {
+    background: url(../images/ucenter_icon_idcard.png) no-repeat center center;
     background-size: cover;
     display: inline-block;
     width: 16px;
@@ -181,7 +291,7 @@ ul,li {
     outline: none;
     font-size: 1.25em;
     line-height: 220%;
-    border-radius: 4px;
+    /* border-radius: 4px; */
 }
 
 .login-box-bottom {
@@ -217,7 +327,9 @@ ul,li {
     border-left: none;
 }
 
-.box-close ,.page-close,.sub-box-close {
+.box-close,
+.page-close,
+.sub-box-close {
     position: absolute;
     width: 18px;
     height: 18px;
@@ -225,7 +337,9 @@ ul,li {
     right: 22px;
 }
 
-.box-close img,.page-close img,.sub-box-close img {
+.box-close img,
+.page-close img,
+.sub-box-close img {
     width: 100%;
     height: 100%;
 }
@@ -307,14 +421,14 @@ ul,li {
     position: absolute;
     width: 18px;
     height: 18px;
-    background: url(../images/pay_noselected_icon.png?v=20180328) 50% 50%;
+    background: url(../images/pay_noselected_icon.png) 50% 50%;
     background-size: cover;
     bottom: 15px;
     right: 10px;
 }
 
 .pay-type-items a.selected em {
-    background-image: url(../images/pay_selected_icon.png?v=20180328);
+    background-image: url(../images/pay_selected_icon.png);
 }
 
 .pay-type-items a .paytype-radio {
@@ -362,16 +476,23 @@ ul,li {
     color: #787878;
 }
 
-.regBoxAcount-dialog,.regBoxPhone-dialog,.findpwdBox-dialog {
+.regBoxAcount-dialog,
+.regBoxPhone-dialog,
+.findpwdBox-dialog {
     width: 90%;
     height: 250px;
 }
 
-.regBoxAcount-dialog .layui-m-layercont,.regBoxPhone-dialog .layui-m-layercont,.findpwdBox-dialog .layui-m-layercont,.service-dialog .layui-m-layercont {
+.regBoxAcount-dialog .layui-m-layercont,
+.regBoxPhone-dialog .layui-m-layercont,
+.findpwdBox-dialog .layui-m-layercont,
+.service-dialog .layui-m-layercont {
     height: 100%;
 }
 
-.regBoxAcount-dialog form,.regBoxPhone-dialog form,.findpwdBox-dialog form {
+.regBoxAcount-dialog form,
+.regBoxPhone-dialog form,
+.findpwdBox-dialog form {
     height: 100%;
 }
 
@@ -491,7 +612,9 @@ ul,li {
     text-align: center;
 }
 
+
 /*浮标*/
+
 .assistive-wrap {
     width: 40px;
     height: 40px;
@@ -573,22 +696,22 @@ ul,li {
 }
 
 .menuList a.menulist-item.login em {
-    background: url("../images/Interface-85.png?v=20180328") no-repeat 50% 50%;
+    background: url("../images/Interface-85.png") no-repeat 50% 50%;
     background-size: cover;
 }
 
 .menuList a.menulist-item.account em {
-    background: url("../images/Interface-93.png?v=201803281450") no-repeat 50% 50%;
+    background: url("../images/Interface-93.png") no-repeat 50% 50%;
     background-size: cover;
 }
 
 .menuList a.menulist-item.gift em {
-    background: url("../images/Interface-91.png?v=20180328") no-repeat 50% 50%;
+    background: url("../images/Interface-91.png") no-repeat 50% 50%;
     background-size: cover;
 }
 
 .menuList a.menulist-item.logout em {
-    background: url("../images/Interface-92.png?v=20180328") no-repeat 50% 50%;
+    background: url("../images/Interface-92.png") no-repeat 50% 50%;
     background-size: cover;
 }
 
@@ -628,7 +751,7 @@ ul,li {
 
 #downUrlBox .closeLink {
     position: absolute;
-    bottom: 4px ;
+    bottom: 4px;
     right: 4px;
     width: 12px;
     height: 12px;
@@ -716,7 +839,9 @@ ul,li {
     background-size: cover;
 }
 
+
 /*个人中心*/
+
 .ucenter-dialog .login-box-ui {
     padding: 0;
 }
@@ -725,7 +850,7 @@ ul,li {
     border-bottom: 1px solid #e5e4e4;
     height: 74px;
     padding-top: 15px;
-    margin-bottom:  15px;
+    margin-bottom: 15px;
 }
 
 .avatar-l {
@@ -790,5 +915,10 @@ ul,li {
 
 .clickButton em.assistive-em {
     background: url("../images/ucenter_icon_assistive.png") no-repeat 50% 50%;
+    background-size: cover;
+}
+
+.clickButton em.realname-em {
+    background: url("../images/ucenter_icon_realname.png") no-repeat 50% 50%;
     background-size: cover;
 }
